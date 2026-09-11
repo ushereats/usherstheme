@@ -1,345 +1,343 @@
 /* ============================================================
-   USHER'S THEME — Jellyfin 12.0
-   Structure modeled on confirmed-working community themes.
-   Compatible: Desktop / Web / TV / Mobile
+   USHER'S THEME — Netflix Edition
+   Jellyfin 12.0 — Desktop / Web / TV / Mobile
    ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 /* ── ROOT TOKENS ── */
 :root {
   color-scheme: dark;
-  --usher-accent: rgb(124, 58, 237);
-  --usher-accent-alpha: rgba(124, 58, 237, 0.85);
-  --usher-accent-dim: rgba(124, 58, 237, 0.12);
 
-  --usher-bg: #000000;
-  --usher-bg-alt: #0d0d0d;
-  --usher-header-bg: rgba(0, 0, 0, 0.88);
-  --usher-drawer-bg: rgba(0, 0, 0, 0.94);
-  --usher-surface: rgb(20, 20, 22);
-  --usher-surface-alpha: rgba(20, 20, 22, 0.55);
-  --usher-glass-tint: rgba(30, 30, 34, 0.85);
+  --nf-red: rgb(229, 9, 20);
+  --nf-red-dim: rgba(229, 9, 20, 0.18);
+  --nf-red-bright: rgb(255, 26, 26);
 
-  --usher-border: hsl(260, 60%, 18%);
-  --usher-border-dim: rgba(124, 58, 237, 0.28);
+  --nf-bg: #000000;
+  --nf-bg-alt: #0a0a0a;
+  --nf-surface: rgb(20, 20, 20);
+  --nf-surface-2: rgb(35, 35, 35);
+  --nf-glass: rgba(20, 20, 20, 0.9);
 
-  --usher-text: rgb(255, 255, 255);
-  --usher-text-dim: rgb(160, 160, 160);
+  --nf-border: rgba(255, 255, 255, 0.08);
+  --nf-border-red: rgba(229, 9, 20, 0.4);
 
-  --usher-btn-play: var(--usher-accent);
-  --usher-btn-submit: var(--usher-accent);
-  --usher-btn-delete: rgb(169, 29, 29);
+  --nf-text: #ffffff;
+  --nf-text-dim: rgb(170, 170, 170);
+  --nf-text-dimmer: rgb(120, 120, 120);
 
-  --usher-radius-lg: 1.25em;
-  --usher-radius: 1em;
-  --usher-radius-sm: 0.5em;
-  --usher-radius-xs: 0.375em;
+  --nf-radius-lg: 8px;
+  --nf-radius: 6px;
+  --nf-radius-sm: 4px;
 
-  --usher-border-w: 0.06em;
-  --usher-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --nf-blur: blur(14px);
+  --nf-ease: cubic-bezier(0.4, 0, 0.2, 1);
 
-  --usher-blur-sm: blur(4px);
-  --usher-blur: blur(10px);
-  --usher-blur-lg: blur(20px);
+  --nf-app-bar-height: 4.5em;
 
-  --usher-app-bar-height: 5em;
-
-  --usher-bg-gradient: linear-gradient(0deg, var(--usher-bg) 35%, var(--usher-bg-alt));
-  --usher-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.94), 40%, transparent);
-  --usher-hover-gradient-v: linear-gradient(0deg, transparent, var(--usher-accent-dim) 45%, var(--usher-accent-dim) 55%, transparent);
-  --usher-hover-gradient-h: linear-gradient(90deg, transparent, var(--usher-accent-dim) 45%, var(--usher-accent-dim) 55%, transparent);
+  --nf-header-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.4) 60%, transparent);
+  --nf-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.96) 10%, transparent 90%);
+  --nf-backdrop-fade: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 65%, var(--nf-bg) 100%);
 }
 
 /* ── BASE ── */
-html, body {
-  background-color: var(--usher-bg) !important;
-  background: var(--usher-bg-gradient);
+html {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--nf-bg) !important;
   overscroll-behavior: none;
 }
 
-::selection { background: var(--usher-accent-dim); color: var(--usher-text); }
-::-moz-selection { background: var(--usher-accent-dim); color: var(--usher-text); }
-:focus-visible { outline-color: var(--usher-accent-alpha) !important; }
+h1, h2, h3, .pageTitle, .sectionTitle {
+  font-family: "Bebas Neue", "Inter", sans-serif;
+  letter-spacing: 0.02em;
+}
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--usher-bg); }
-::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.55); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--usher-accent); }
-* { scrollbar-width: thin; scrollbar-color: rgba(124, 58, 237, 0.55) var(--usher-bg); }
+::selection { background: var(--nf-red-dim); color: #fff; }
+::-moz-selection { background: var(--nf-red-dim); color: #fff; }
+:focus-visible { outline-color: var(--nf-red) !important; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--nf-bg); }
+::-webkit-scrollbar-thumb { background: rgba(229, 9, 20, 0.6); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--nf-red); }
+* { scrollbar-width: thin; scrollbar-color: rgba(229, 9, 20, 0.6) var(--nf-bg); }
 
 input[type="checkbox"]:checked,
-input[type="radio"]:checked { accent-color: var(--usher-accent); }
+input[type="radio"]:checked { accent-color: var(--nf-red); }
 
-/* ── HEADER / HEADROOM ── */
+/* ── HEADER ── */
 .skinHeader {
-  background-color: var(--usher-header-bg) !important;
-  border-bottom: var(--usher-border-w) solid var(--usher-border);
+  background: var(--nf-header-gradient) !important;
+  border-bottom: none !important;
+  transition: background 0.3s var(--nf-ease);
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  backdrop-filter: var(--usher-blur);
-  background: var(--usher-header-bg);
+  background: rgba(0, 0, 0, 0.92) !important;
+  backdrop-filter: var(--nf-blur);
+  border-bottom: 1px solid var(--nf-border) !important;
 }
 
 .skinHeader-withBackground.semiTransparent {
-  backdrop-filter: none;
-  background-color: transparent;
+  background: var(--nf-header-gradient) !important;
   border: none;
 }
 
-.headerTop { align-items: center; height: var(--usher-app-bar-height); }
-.headerUserButtonRound { border-radius: 50px !important; }
+.headerTop { align-items: center; height: var(--nf-app-bar-height); padding: 0 4%; }
+.headerUserButtonRound { border-radius: 4px !important; }
 
-.headroom { transition: transform 0.5s; }
+.headroom { transition: transform 0.4s var(--nf-ease); }
 .headroom--unpinned {
-  transform: translateY(calc(-1 * var(--usher-app-bar-height) - var(--usher-border-w)));
+  transform: translateY(calc(-1 * var(--nf-app-bar-height)));
+}
+
+.pageTitle {
+  font-size: 1.6em !important;
+  color: var(--nf-red) !important;
+  font-weight: 700;
 }
 
 /* ── SECTION TABS ── */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
-  margin: 0.25em 0.5em;
-  padding: 0 1.25em;
-  height: 2.5em;
-  border-radius: var(--usher-radius);
-  background-color: rgba(255, 255, 255, 0.06);
-  color: var(--usher-text);
-  transition: color 0.2s, background 0.2s;
+  margin: 0 1.2em 0 0;
+  padding: 0.4em 0;
+  height: auto;
+  border-radius: 0;
+  background: transparent !important;
+  color: var(--nf-text-dim);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
 }
 
 .sectionTabs .emby-tab-button-active {
-  color: #fff;
-  background-color: var(--usher-accent) !important;
+  color: #fff !important;
+  background: transparent !important;
+  border-bottom: 2px solid var(--nf-red) !important;
 }
 
 .sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) {
-  background-color: var(--usher-accent-dim);
+  color: #fff;
 }
 
 .emby-tabs-slider {
-  background-color: var(--usher-glass-tint);
-  border-radius: 50px;
-  padding: 5px;
+  background: transparent;
+  padding: 0;
 }
 
 /* ── NAV DRAWER ── */
 .mainDrawer {
-  background-color: var(--usher-drawer-bg);
-  border-right: var(--usher-border-w) solid var(--usher-border);
-  backdrop-filter: var(--usher-blur);
+  background-color: rgba(10, 10, 10, 0.97);
+  border-right: 1px solid var(--nf-border);
+  backdrop-filter: var(--nf-blur);
 }
 
 .navMenuOption {
-  border-radius: var(--usher-radius-sm) !important;
-  margin: 0.2em 0.8em !important;
-  padding: 0.6em 1em !important;
-  color: rgba(255, 255, 255, 0.7) !important;
+  border-radius: var(--nf-radius) !important;
+  margin: 0.15em 0.7em !important;
+  padding: 0.65em 1em !important;
+  color: var(--nf-text-dim) !important;
+  font-weight: 500;
   transition: all 0.15s !important;
 }
 
-.navMenuOption .material-icons { color: rgba(255, 255, 255, 0.5); transition: color 0.15s; }
+.navMenuOption .material-icons { color: var(--nf-text-dimmer); transition: color 0.15s; }
 
 .navMenuOption-selected {
-  background-color: var(--usher-accent) !important;
+  background-color: var(--nf-red) !important;
   color: #fff !important;
 }
 .navMenuOption-selected .material-icons { color: #fff !important; }
 
 .navMenuOption:hover:not(.navMenuOption-selected) {
-  background: var(--usher-accent-dim) !important;
-  color: #a78bfa !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #fff !important;
 }
-.navMenuOption:hover .material-icons { color: #a78bfa !important; }
+.navMenuOption:hover .material-icons { color: #fff !important; }
 
 .navMenuOptionIcon,
 .listItemIcon:not(.listItemIcon-transparent) {
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-radius: var(--nf-radius-sm);
 }
 
 .mainDrawer-scrollContainer > h3 {
-  font-size: 0.7rem;
-  letter-spacing: 1.5px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
-  margin: 1.2em 1.2em 0.3em 1.2em;
-  font-weight: 600;
+  color: var(--nf-text-dimmer);
+  margin: 1.4em 1.2em 0.3em 1.2em;
+  font-weight: 700;
 }
 
 /* ── CARDS ── */
 .cardScalable {
-  border-radius: var(--usher-radius);
-  border: var(--usher-border-w) solid transparent !important;
+  border-radius: var(--nf-radius);
+  border: 1px solid transparent !important;
   overflow: hidden !important;
-  box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.6);
-  transition: transform 125ms;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s var(--nf-ease), box-shadow 0.3s var(--nf-ease);
 }
 
-.card-hoverable:hover .cardScalable,
-.card-hoverable:hover .visualCardBox {
-  border-color: var(--usher-accent) !important;
+.card-hoverable:hover .cardScalable {
+  transform: scale(1.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
+  z-index: 5;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.card-hoverable:hover .cardImageContainer { transform: scale(1.025); }
+.card-hoverable:hover .cardImageContainer { transform: scale(1); }
 
 .cardBox,
-.card .cardBox { background-color: var(--usher-surface) !important; }
+.card .cardBox { background-color: var(--nf-surface) !important; }
 
-.cardText,
-.cardText-secondary { color: rgba(255, 255, 255, 0.65) !important; }
-
+.cardText { color: var(--nf-text-dim) !important; font-weight: 400; }
 .cardText-first { color: #fff !important; font-weight: 600; }
+.cardText-secondary { color: var(--nf-text-dimmer) !important; }
 
 .card:focus .cardBox.visualCardBox,
 .card:focus .cardBox:not(.visualCardBox) .cardScalable {
-  border: 2px solid var(--usher-accent) !important;
+  border: 2px solid #fff !important;
+  box-shadow: 0 0 0 3px var(--nf-red) !important;
 }
 
 .innerCardFooter,
 .chapterThumbTextContainer {
-  background: var(--usher-card-footer-gradient);
-  text-shadow: 0.1em 0.1em 0 black;
+  background: var(--nf-card-footer-gradient);
+  text-shadow: 0.08em 0.08em 0.1em rgba(0, 0, 0, 0.9);
 }
 
-/* Card hover wave */
+/* Card overlay hover tint — subtle, no gimmicky wipe */
 .cardOverlayContainer {
-  background: transparent !important;
-  transition: background 0.3s ease !important;
+  background: transparent;
+  transition: background 0.25s ease;
 }
-.cardOverlayContainer::after {
-  content: "" !important;
-  transition: transform 0.7s ease, opacity 0.6s ease !important;
-  position: absolute !important;
-  inset: 0 !important;
-  transform: translateY(-105%) !important;
-  background: var(--usher-hover-gradient-v) !important;
-  pointer-events: none !important;
-  z-index: 1;
-}
-.card-hoverable:hover .cardOverlayContainer::after {
-  transform: translateY(105%) !important;
-  opacity: 0 !important;
-}
-.backdropCard.card-hoverable .cardOverlayContainer::after,
-.overflowBackdropCard.card-hoverable .cardOverlayContainer::after {
-  transform: translateX(-105%) translateY(0) !important;
-  background: var(--usher-hover-gradient-h) !important;
-}
-.backdropCard.card-hoverable:hover .cardOverlayContainer::after,
-.overflowBackdropCard.card-hoverable:hover .cardOverlayContainer::after {
-  transform: translateX(105%) translateY(0) !important;
-  opacity: 0 !important;
+.card-hoverable:hover .cardOverlayContainer {
+  background: rgba(0, 0, 0, 0.15);
 }
 
-.card-hoverable:hover .cardText,
-.card-hoverable:hover .cardText-secondary,
-.card-hoverable:hover .cardTextCentered {
-  color: #a78bfa !important;
+.card-hoverable:hover .cardText-first {
+  color: #fff !important;
 }
 
-/* Play FAB on card hover */
+/* Play button on card hover — Netflix white circle, black glyph */
 .cardOverlayContainer > .cardOverlayFab-primary,
 .listItemImageButton,
 .layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
-  background-color: var(--usher-accent) !important;
-  color: white !important;
-  border: var(--usher-border-w) solid rgba(167, 139, 250, 0.55) !important;
-  box-shadow: 0 0 10px var(--usher-accent-dim) !important;
-  transition: background 0.15s, box-shadow 0.15s, transform 0.1s !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+  transition: background 0.15s, transform 0.15s !important;
 }
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
 .listItemImageButton:hover {
-  background-color: #9061f9 !important;
-  box-shadow: 0 0 14px rgba(124, 58, 237, 0.5) !important;
+  background-color: #e6e6e6 !important;
+  transform: scale(1.08) !important;
 }
 .cardOverlayContainer > .cardOverlayFab-primary:active,
 .listItemImageButton:active { transform: scale(0.95) !important; }
 
 /* ── PROGRESS / INDICATORS ── */
 .itemProgressBar {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-radius: var(--usher-radius);
-  backdrop-filter: var(--usher-blur-sm);
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-radius: 2px;
+  height: 3px !important;
 }
 
 .itemProgressBarForeground,
 .playbackProgress > div {
-  background-color: var(--usher-accent) !important;
-  border-radius: var(--usher-radius);
+  background-color: var(--nf-red) !important;
+  border-radius: 2px;
 }
 
 .countIndicator {
-  background: var(--usher-accent-alpha);
-  border-radius: 10px !important;
-  border: var(--usher-border-w) solid var(--usher-border-dim);
+  background: var(--nf-red);
+  border-radius: 4px !important;
+  font-weight: 700;
 }
 
 .playedIndicator {
   background: rgb(34, 197, 94);
-  border-radius: 10px !important;
+  border-radius: 50% !important;
 }
 
 .mediaSourceIndicator {
-  background: rgb(30, 0, 40);
-  border: var(--usher-border-w) solid var(--usher-border-dim);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--nf-border);
 }
 
-.progressring-spiner { border-color: var(--usher-accent) !important; }
+.progressring-spiner { border-color: var(--nf-red) !important; }
 
 .mdl-slider-background-lower,
 .mdl-slider::-webkit-slider-thumb,
-.mdl-slider::-moz-range-thumb { background-color: var(--usher-accent) !important; }
+.mdl-slider::-moz-range-thumb { background-color: var(--nf-red) !important; }
 
-.sliderMarker.watched { background-color: var(--usher-accent) !important; }
-.iconOsdProgressInner { background: var(--usher-accent) !important; }
+.sliderMarker.watched { background-color: var(--nf-red) !important; }
+.iconOsdProgressInner { background: var(--nf-red) !important; }
 
 .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
-  background: var(--usher-accent-dim);
+  background: var(--nf-red-dim);
 }
 .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
-  background: var(--usher-accent);
+  background: var(--nf-red);
 }
 
 /* ── BUTTONS ── */
 .raised,
 .fab,
 a[data-role="button"] {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: var(--usher-text);
-  border: var(--usher-border-w) solid transparent;
-  transition: background 0.15s var(--usher-ease), color 0.15s var(--usher-ease) !important;
+  background: rgba(109, 109, 110, 0.5) !important;
+  color: #fff;
+  border: none;
+  border-radius: var(--nf-radius-sm);
+  font-weight: 600;
+  transition: background 0.15s !important;
 }
 .raised:hover,
 .fab:hover,
 a[data-role="button"]:hover {
-  background: var(--usher-accent) !important;
-  color: #fff !important;
+  background: rgba(109, 109, 110, 0.75) !important;
 }
-.raised:active, .fab:active, .emby-button:active { filter: brightness(1.15) !important; transform: scale(0.98); }
+.raised:active, .fab:active, .emby-button:active { filter: brightness(1.1) !important; }
 
 .button-submit,
 .raised.button-submit {
-  background: var(--usher-btn-submit) !important;
+  background: var(--nf-red) !important;
   color: #fff !important;
-  border: var(--usher-border-w) solid rgba(167, 139, 250, 0.6) !important;
+  font-weight: 700;
 }
+.button-submit:hover { background: var(--nf-red-bright) !important; }
 
 #btnDeleteImage, .button-delete, .btnRevoke, #btnShutdown {
-  background: var(--usher-btn-delete) !important;
+  background: rgb(140, 20, 20) !important;
 }
 
 .button-flat:hover,
-.button-link:hover { color: var(--usher-accent) !important; }
+.button-link:hover { color: var(--nf-red-bright) !important; }
 
+/* Play button — Netflix solid white */
 .btnPlay.detailButton {
-  background-color: var(--usher-btn-play) !important;
-  color: white;
-  border-radius: 3em;
+  background-color: #fff !important;
+  color: #000 !important;
+  border-radius: var(--nf-radius-sm);
+  font-weight: 700;
 }
-.btnPlay.detailButton:hover { background-color: #9061f9 !important; }
+.btnPlay.detailButton:hover { background-color: rgba(255, 255, 255, 0.75) !important; }
 
+.detailButton:not(.btnPlay) {
+  background: rgba(109, 109, 110, 0.4) !important;
+  border-radius: 50%;
+}
 .detailButton:not(.btnPlay):hover {
-  color: var(--usher-accent) !important;
-  background: var(--usher-accent-dim) !important;
+  background: rgba(109, 109, 110, 0.7) !important;
 }
 
 /* ── DIALOGS / OVERLAYS / GLASS ── */
@@ -349,114 +347,169 @@ a[data-role="button"]:hover {
 .playerStats-stats,
 .actionSheetContent,
 .manualLoginForm {
-  background-color: var(--usher-glass-tint) !important;
-  border-radius: var(--usher-radius-lg) !important;
-  border: var(--usher-border-w) solid var(--usher-border-dim) !important;
+  background-color: var(--nf-glass) !important;
+  border-radius: var(--nf-radius-lg) !important;
+  border: 1px solid var(--nf-border) !important;
 }
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .dialog, .toast, .upNextContainer, .playerStats-stats,
-  .mainDrawer, .emby-tabs-slider,
-  .videoOsdBottom .osdControls, .nowPlayingBar {
-    -webkit-backdrop-filter: var(--usher-blur) !important;
-    backdrop-filter: var(--usher-blur) !important;
+  .mainDrawer, .videoOsdBottom .osdControls, .nowPlayingBar {
+    -webkit-backdrop-filter: var(--nf-blur) !important;
+    backdrop-filter: var(--nf-blur) !important;
   }
 }
 
-.upNextContainer .btnStartNow,
-.upNextDialog-countdownText { color: var(--usher-accent) !important; }
+.upNextContainer .btnStartNow {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.upNextDialog-countdownText { color: var(--nf-red) !important; }
 
-.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--usher-accent); }
+.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--nf-red); }
 
 /* ── DETAIL PAGE ── */
 .detailPagePrimaryContainer,
-.detailPageWrapperContainer { background-color: var(--usher-bg) !important; }
+.detailPageWrapperContainer { background-color: var(--nf-bg) !important; }
 
-#itemDetailPage .btnPlay { background: var(--usher-accent) !important; color: #fff !important; }
-#itemDetailPage .btnPlay:hover { filter: brightness(1.1); }
+.itemBackdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--nf-backdrop-fade);
+}
+
+#itemDetailPage .btnPlay {
+  background: #fff !important;
+  color: #000 !important;
+  font-weight: 700;
+}
+#itemDetailPage .btnPlay:hover { background: rgba(255, 255, 255, 0.75) !important; }
 
 .detailImageContainer .cardImageContainer,
-.detailImageContainer .card { border-radius: var(--usher-radius-lg) !important; }
+.detailImageContainer .card { border-radius: var(--nf-radius) !important; }
 
-.starIcon {
-  background: linear-gradient(to right, var(--usher-accent), #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.nameContainer > h1.itemName,
+.nameContainer > h1.parentName {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 3.5em;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+.starIcon { color: var(--nf-red) !important; }
+
+.mediaInfoOfficialRating {
+  border: 1px solid var(--nf-text-dimmer) !important;
+  color: var(--nf-text) !important;
+  background: transparent !important;
 }
 
 /* ── MEDIA PLAYER / OSD ── */
 .nowPlayingBar,
 .videoOsdBottom .osdControls {
-  background-color: var(--usher-glass-tint) !important;
-  border-radius: var(--usher-radius-lg);
+  background-color: var(--nf-glass) !important;
+  border-radius: var(--nf-radius-lg);
 }
 
 .skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
-  background-color: rgba(0, 0, 0, 0.88);
-  border: 1px solid var(--usher-accent);
-  color: white;
-  border-radius: var(--usher-radius-sm);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--nf-radius-sm);
 }
-.skip-button:hover, #introSkipperButton:hover { background-color: var(--usher-accent); }
+.skip-button:hover, #introSkipperButton:hover { background-color: #fff; }
 
 /* ── LOGIN PAGE ── */
 #loginPage {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(13, 13, 13, 0.95)) !important;
+  background: radial-gradient(ellipse at top, rgba(60, 0, 0, 0.35), transparent 60%), var(--nf-bg) !important;
 }
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
-  background: rgba(0, 0, 0, 0.82);
-  border-radius: var(--usher-radius-lg);
-  border: 1px solid var(--usher-border);
-  box-shadow: 0 0 40px var(--usher-accent-dim);
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: var(--nf-radius);
+  border: 1px solid var(--nf-border);
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+  padding: 3em 3em 1.5em !important;
 }
 
-#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--usher-accent) !important; }
+#loginPage h1 { display: none; }
+
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button {
+  background: transparent !important;
+  color: var(--nf-text-dim) !important;
+}
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: #fff !important; }
+
+.manualLoginForm::before {
+  content: "USHER'S THEME";
+  display: block;
+  text-align: center;
+  font-family: "Bebas Neue", sans-serif;
+  color: var(--nf-red);
+  font-size: 2em;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5em;
+}
 
 /* ── FORM INPUTS ── */
 .emby-input,
 .emby-textarea,
 .emby-select-withcolor,
 .checkboxOutline {
-  border: var(--usher-border-w) solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: var(--usher-radius-xs) !important;
-  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--nf-radius-sm) !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  color: #fff !important;
 }
 
 .emby-input:focus,
 .emby-textarea:focus,
 .emby-select-withcolor:focus,
-.checkboxOutline:focus { border-color: var(--usher-accent) !important; }
+.checkboxOutline:focus { border-color: var(--nf-red) !important; }
 
 input[type="checkbox"]:checked ~ .checkboxOutline,
 input[type="checkbox"]:checked + .checkboxOutline {
-  background: var(--usher-accent) !important;
-  border-color: var(--usher-accent) !important;
+  background: var(--nf-red) !important;
+  border-color: var(--nf-red) !important;
 }
 
 /* ── TABLES / DASHBOARD ── */
 table:not(.MuiTable-root.MuiTable-stickyHeader) {
-  border: var(--usher-border-w) solid var(--usher-border) !important;
-  border-radius: var(--usher-radius-sm);
-  background: rgb(10, 10, 12);
+  border: 1px solid var(--nf-border) !important;
+  border-radius: var(--nf-radius-sm);
+  background: var(--nf-surface);
 }
 
-.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(0, 0, 0, 0.5) !important; }
-.detailTableBodyRow-shaded:nth-child(even) { background: rgba(255, 255, 255, 0.03) !important; }
+.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(0, 0, 0, 0.4) !important; }
+.detailTableBodyRow-shaded:nth-child(even) { background: rgba(255, 255, 255, 0.02) !important; }
 
-.Mui-selected { background-color: var(--usher-accent) !important; }
-.MuiDrawer-paper { background: var(--usher-drawer-bg); }
-.MuiAppBar-root { background: var(--usher-header-bg); }
+.Mui-selected { background-color: var(--nf-red) !important; }
+.MuiDrawer-paper { background: rgba(10, 10, 10, 0.97); }
+.MuiAppBar-root { background: rgba(0, 0, 0, 0.92); }
 
 /* ── TV GUIDE ── */
-.guideProgramName { background-color: var(--usher-accent-dim); border-radius: var(--usher-radius-xs); }
-.programCell-active .guideProgramName { background-color: rgba(124, 58, 237, 0.25); }
-.guide-channelHeaderCell { background-color: var(--usher-accent-dim); border-radius: var(--usher-radius-sm); }
+.guideProgramName { background-color: rgba(229, 9, 20, 0.12); border-radius: var(--nf-radius-sm); }
+.programCell-active .guideProgramName { background-color: rgba(229, 9, 20, 0.3); }
+.guide-channelHeaderCell { background-color: rgba(255, 255, 255, 0.06); border-radius: var(--nf-radius-sm); }
+
+/* ── HOME LIBRARY BUTTONS ── */
+.homeLibraryButton {
+  border-radius: var(--nf-radius-sm) !important;
+}
+.raised.homeLibraryButton {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+.raised.homeLibraryButton:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
 
 /* ── RESPONSIVE / LAYOUT HOOKS ── */
 .layout-mobile .detailPagePrimaryContainer { background: transparent; }
 .layout-tv .emby-tab-button { padding: 0.4em 1.3em; }
-.layout-tv .card:focus .cardBox { border-width: 3px !important; }
+.layout-tv .card:focus .cardBox { box-shadow: 0 0 0 4px var(--nf-red) !important; }
 
 /* Mobile touch target fix */
 .headerButton,
