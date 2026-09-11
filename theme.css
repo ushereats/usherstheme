@@ -1,307 +1,482 @@
-/* USHER'S THEME — Jellyfin 12.0
-   Structure and selector set modeled on confirmed-working Jellyfin community themes.
-   Install: Dashboard > General > Custom CSS > @import this file's raw/CDN URL, or paste inline. */
+/* ============================================================
+   USHER'S THEME — Jellyfin 12.0
+   Structure modeled on confirmed-working community themes.
+   Compatible: Desktop / Web / TV / Mobile
+   ============================================================ */
 
-/* 1. VARIABLES — override these to retint */
+/* ── ROOT TOKENS ── */
 :root {
-    --usher-accent: 124, 58, 237;
-    --usher-accent-solid: #7c3aed;
-    --usher-bg: #0d0f12;
-    --usher-surface: 22, 25, 29;
-    --usher-glass-tint: 30, 34, 39;
-    --usher-radius: 12px;
-    --usher-radius-lg: 24px;
-    --usher-glass-blur: 15px;
-    --usher-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: dark;
+  --usher-accent: rgb(124, 58, 237);
+  --usher-accent-alpha: rgba(124, 58, 237, 0.85);
+  --usher-accent-dim: rgba(124, 58, 237, 0.12);
+
+  --usher-bg: #000000;
+  --usher-bg-alt: #0d0d0d;
+  --usher-header-bg: rgba(0, 0, 0, 0.88);
+  --usher-drawer-bg: rgba(0, 0, 0, 0.94);
+  --usher-surface: rgb(20, 20, 22);
+  --usher-surface-alpha: rgba(20, 20, 22, 0.55);
+  --usher-glass-tint: rgba(30, 30, 34, 0.85);
+
+  --usher-border: hsl(260, 60%, 18%);
+  --usher-border-dim: rgba(124, 58, 237, 0.28);
+
+  --usher-text: rgb(255, 255, 255);
+  --usher-text-dim: rgb(160, 160, 160);
+
+  --usher-btn-play: var(--usher-accent);
+  --usher-btn-submit: var(--usher-accent);
+  --usher-btn-delete: rgb(169, 29, 29);
+
+  --usher-radius-lg: 1.25em;
+  --usher-radius: 1em;
+  --usher-radius-sm: 0.5em;
+  --usher-radius-xs: 0.375em;
+
+  --usher-border-w: 0.06em;
+  --usher-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --usher-blur-sm: blur(4px);
+  --usher-blur: blur(10px);
+  --usher-blur-lg: blur(20px);
+
+  --usher-app-bar-height: 5em;
+
+  --usher-bg-gradient: linear-gradient(0deg, var(--usher-bg) 35%, var(--usher-bg-alt));
+  --usher-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.94), 40%, transparent);
+  --usher-hover-gradient-v: linear-gradient(0deg, transparent, var(--usher-accent-dim) 45%, var(--usher-accent-dim) 55%, transparent);
+  --usher-hover-gradient-h: linear-gradient(90deg, transparent, var(--usher-accent-dim) 45%, var(--usher-accent-dim) 55%, transparent);
 }
 
-/* 2. BASE */
-body {
-    background-color: var(--usher-bg) !important;
-    overscroll-behavior: none;
+/* ── BASE ── */
+html, body {
+  background-color: var(--usher-bg) !important;
+  background: var(--usher-bg-gradient);
+  overscroll-behavior: none;
 }
 
-::selection {
-    background: rgba(var(--usher-accent), 0.3);
-}
+::selection { background: var(--usher-accent-dim); color: var(--usher-text); }
+::-moz-selection { background: var(--usher-accent-dim); color: var(--usher-text); }
+:focus-visible { outline-color: var(--usher-accent-alpha) !important; }
 
-:focus-visible {
-    outline-color: rgba(var(--usher-accent), 0.6) !important;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--usher-bg);
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(var(--usher-accent), 0.6);
-    border-radius: var(--usher-radius);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(var(--usher-accent), 0.9);
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--usher-bg); }
+::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.55); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--usher-accent); }
+* { scrollbar-width: thin; scrollbar-color: rgba(124, 58, 237, 0.55) var(--usher-bg); }
 
 input[type="checkbox"]:checked,
-input[type="radio"]:checked {
-    accent-color: var(--usher-accent-solid);
-}
+input[type="radio"]:checked { accent-color: var(--usher-accent); }
 
-/* 3. HEADER */
+/* ── HEADER / HEADROOM ── */
 .skinHeader {
-    background-color: rgba(var(--usher-surface), 0.85) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--usher-header-bg) !important;
+  border-bottom: var(--usher-border-w) solid var(--usher-border);
 }
 
-.headerUserButtonRound {
-    border-radius: 50px !important;
+.skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
+  backdrop-filter: var(--usher-blur);
+  background: var(--usher-header-bg);
 }
 
-/* 4. NAV DRAWER */
+.skinHeader-withBackground.semiTransparent {
+  backdrop-filter: none;
+  background-color: transparent;
+  border: none;
+}
+
+.headerTop { align-items: center; height: var(--usher-app-bar-height); }
+.headerUserButtonRound { border-radius: 50px !important; }
+
+.headroom { transition: transform 0.5s; }
+.headroom--unpinned {
+  transform: translateY(calc(-1 * var(--usher-app-bar-height) - var(--usher-border-w)));
+}
+
+/* ── SECTION TABS ── */
+.sectionTabs .emby-tab-button {
+  display: inline-flex;
+  margin: 0.25em 0.5em;
+  padding: 0 1.25em;
+  height: 2.5em;
+  border-radius: var(--usher-radius);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--usher-text);
+  transition: color 0.2s, background 0.2s;
+}
+
+.sectionTabs .emby-tab-button-active {
+  color: #fff;
+  background-color: var(--usher-accent) !important;
+}
+
+.sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) {
+  background-color: var(--usher-accent-dim);
+}
+
+.emby-tabs-slider {
+  background-color: var(--usher-glass-tint);
+  border-radius: 50px;
+  padding: 5px;
+}
+
+/* ── NAV DRAWER ── */
 .mainDrawer {
-    background-color: rgba(var(--usher-glass-tint), 0.85);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--usher-drawer-bg);
+  border-right: var(--usher-border-w) solid var(--usher-border);
+  backdrop-filter: var(--usher-blur);
 }
 
 .navMenuOption {
-    border-radius: var(--usher-radius) !important;
-    margin-bottom: 2px !important;
+  border-radius: var(--usher-radius-sm) !important;
+  margin: 0.2em 0.8em !important;
+  padding: 0.6em 1em !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.15s !important;
 }
+
+.navMenuOption .material-icons { color: rgba(255, 255, 255, 0.5); transition: color 0.15s; }
 
 .navMenuOption-selected {
-    background: var(--usher-accent-solid) !important;
-    color: #fff !important;
+  background-color: var(--usher-accent) !important;
+  color: #fff !important;
 }
+.navMenuOption-selected .material-icons { color: #fff !important; }
+
+.navMenuOption:hover:not(.navMenuOption-selected) {
+  background: var(--usher-accent-dim) !important;
+  color: #a78bfa !important;
+}
+.navMenuOption:hover .material-icons { color: #a78bfa !important; }
 
 .navMenuOptionIcon,
-.listItemIcon {
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 50px;
+.listItemIcon:not(.listItemIcon-transparent) {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border-radius: 50px;
 }
 
-/* 5. TABS */
-.emby-tabs-slider {
-    background-color: rgba(var(--usher-glass-tint), 0.85);
-    border-radius: 50px;
-    padding: 5px;
+.mainDrawer-scrollContainer > h3 {
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 1.2em 1.2em 0.3em 1.2em;
+  font-weight: 600;
 }
 
-.emby-tab-button {
-    border-radius: 50px;
-    color: rgba(255, 255, 255, 0.55);
+/* ── CARDS ── */
+.cardScalable {
+  border-radius: var(--usher-radius);
+  border: var(--usher-border-w) solid transparent !important;
+  overflow: hidden !important;
+  box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.6);
+  transition: transform 125ms;
 }
 
-.emby-tab-button-active {
-    background: var(--usher-accent-solid) !important;
-    color: #fff !important;
-    border-radius: 50px;
+.card-hoverable:hover .cardScalable,
+.card-hoverable:hover .visualCardBox {
+  border-color: var(--usher-accent) !important;
 }
 
-/* 6. BUTTONS */
-.raised,
-.fab,
-a[data-role="button"] {
-    background: rgba(255, 255, 255, 0.08) !important;
-    transition: background 0.3s var(--usher-ease), color 0.3s var(--usher-ease) !important;
-}
+.card-hoverable:hover .cardImageContainer { transform: scale(1.025); }
 
-.raised:hover,
-.fab:hover,
-a[data-role="button"]:hover {
-    background: var(--usher-accent-solid) !important;
-    color: #fff !important;
-}
-
-.button-submit,
-.raised.button-submit {
-    background: var(--usher-accent-solid) !important;
-    color: #fff !important;
-}
-
-.button-flat:hover,
-.button-link {
-    color: var(--usher-accent-solid) !important;
-}
-
-/* 7. CARDS */
 .cardBox,
-.card .cardBox {
-    background-color: rgba(var(--usher-surface), 1) !important;
-}
-
-.cardImageContainer {
-    border-radius: var(--usher-radius) !important;
-}
+.card .cardBox { background-color: var(--usher-surface) !important; }
 
 .cardText,
-.cardText-secondary {
-    color: rgba(255, 255, 255, 0.65) !important;
+.cardText-secondary { color: rgba(255, 255, 255, 0.65) !important; }
+
+.cardText-first { color: #fff !important; font-weight: 600; }
+
+.card:focus .cardBox.visualCardBox,
+.card:focus .cardBox:not(.visualCardBox) .cardScalable {
+  border: 2px solid var(--usher-accent) !important;
 }
 
-.cardText-first {
-    color: #fff !important;
-    font-weight: 600;
+.innerCardFooter,
+.chapterThumbTextContainer {
+  background: var(--usher-card-footer-gradient);
+  text-shadow: 0.1em 0.1em 0 black;
 }
 
-.card:focus .cardBox,
-.card:focus .cardScalable {
-    border: 2px solid var(--usher-accent-solid) !important;
-    border-radius: var(--usher-radius) !important;
+/* Card hover wave */
+.cardOverlayContainer {
+  background: transparent !important;
+  transition: background 0.3s ease !important;
+}
+.cardOverlayContainer::after {
+  content: "" !important;
+  transition: transform 0.7s ease, opacity 0.6s ease !important;
+  position: absolute !important;
+  inset: 0 !important;
+  transform: translateY(-105%) !important;
+  background: var(--usher-hover-gradient-v) !important;
+  pointer-events: none !important;
+  z-index: 1;
+}
+.card-hoverable:hover .cardOverlayContainer::after {
+  transform: translateY(105%) !important;
+  opacity: 0 !important;
+}
+.backdropCard.card-hoverable .cardOverlayContainer::after,
+.overflowBackdropCard.card-hoverable .cardOverlayContainer::after {
+  transform: translateX(-105%) translateY(0) !important;
+  background: var(--usher-hover-gradient-h) !important;
+}
+.backdropCard.card-hoverable:hover .cardOverlayContainer::after,
+.overflowBackdropCard.card-hoverable:hover .cardOverlayContainer::after {
+  transform: translateX(105%) translateY(0) !important;
+  opacity: 0 !important;
 }
 
-/* 8. PROGRESS / INDICATORS */
+.card-hoverable:hover .cardText,
+.card-hoverable:hover .cardText-secondary,
+.card-hoverable:hover .cardTextCentered {
+  color: #a78bfa !important;
+}
+
+/* Play FAB on card hover */
+.cardOverlayContainer > .cardOverlayFab-primary,
+.listItemImageButton,
+.layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
+  background-color: var(--usher-accent) !important;
+  color: white !important;
+  border: var(--usher-border-w) solid rgba(167, 139, 250, 0.55) !important;
+  box-shadow: 0 0 10px var(--usher-accent-dim) !important;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s !important;
+}
+.cardOverlayContainer > .cardOverlayFab-primary:hover,
+.listItemImageButton:hover {
+  background-color: #9061f9 !important;
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.5) !important;
+}
+.cardOverlayContainer > .cardOverlayFab-primary:active,
+.listItemImageButton:active { transform: scale(0.95) !important; }
+
+/* ── PROGRESS / INDICATORS ── */
 .itemProgressBar {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: var(--usher-radius);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: var(--usher-radius);
+  backdrop-filter: var(--usher-blur-sm);
 }
 
 .itemProgressBarForeground,
 .playbackProgress > div {
-    background-color: var(--usher-accent-solid) !important;
-    border-radius: var(--usher-radius);
+  background-color: var(--usher-accent) !important;
+  border-radius: var(--usher-radius);
 }
 
 .countIndicator {
-    background: rgba(var(--usher-accent), 0.85);
-    border-radius: 10px !important;
+  background: var(--usher-accent-alpha);
+  border-radius: 10px !important;
+  border: var(--usher-border-w) solid var(--usher-border-dim);
 }
 
 .playedIndicator {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 10px !important;
+  background: rgb(34, 197, 94);
+  border-radius: 10px !important;
 }
 
-.progressring-spiner {
-    border-color: var(--usher-accent-solid) !important;
+.mediaSourceIndicator {
+  background: rgb(30, 0, 40);
+  border: var(--usher-border-w) solid var(--usher-border-dim);
 }
 
-/* 9. DIALOGS / OVERLAYS / GLASS */
+.progressring-spiner { border-color: var(--usher-accent) !important; }
+
+.mdl-slider-background-lower,
+.mdl-slider::-webkit-slider-thumb,
+.mdl-slider::-moz-range-thumb { background-color: var(--usher-accent) !important; }
+
+.sliderMarker.watched { background-color: var(--usher-accent) !important; }
+.iconOsdProgressInner { background: var(--usher-accent) !important; }
+
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
+  background: var(--usher-accent-dim);
+}
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
+  background: var(--usher-accent);
+}
+
+/* ── BUTTONS ── */
+.raised,
+.fab,
+a[data-role="button"] {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--usher-text);
+  border: var(--usher-border-w) solid transparent;
+  transition: background 0.15s var(--usher-ease), color 0.15s var(--usher-ease) !important;
+}
+.raised:hover,
+.fab:hover,
+a[data-role="button"]:hover {
+  background: var(--usher-accent) !important;
+  color: #fff !important;
+}
+.raised:active, .fab:active, .emby-button:active { filter: brightness(1.15) !important; transform: scale(0.98); }
+
+.button-submit,
+.raised.button-submit {
+  background: var(--usher-btn-submit) !important;
+  color: #fff !important;
+  border: var(--usher-border-w) solid rgba(167, 139, 250, 0.6) !important;
+}
+
+#btnDeleteImage, .button-delete, .btnRevoke, #btnShutdown {
+  background: var(--usher-btn-delete) !important;
+}
+
+.button-flat:hover,
+.button-link:hover { color: var(--usher-accent) !important; }
+
+.btnPlay.detailButton {
+  background-color: var(--usher-btn-play) !important;
+  color: white;
+  border-radius: 3em;
+}
+.btnPlay.detailButton:hover { background-color: #9061f9 !important; }
+
+.detailButton:not(.btnPlay):hover {
+  color: var(--usher-accent) !important;
+  background: var(--usher-accent-dim) !important;
+}
+
+/* ── DIALOGS / OVERLAYS / GLASS ── */
 .dialog,
 .toast,
 .upNextContainer,
 .playerStats-stats,
-.actionSheetContent {
-    background-color: rgba(var(--usher-glass-tint), 0.92) !important;
-    border-radius: var(--usher-radius-lg) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+.actionSheetContent,
+.manualLoginForm {
+  background-color: var(--usher-glass-tint) !important;
+  border-radius: var(--usher-radius-lg) !important;
+  border: var(--usher-border-w) solid var(--usher-border-dim) !important;
 }
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .dialog,
-    .toast,
-    .upNextContainer,
-    .playerStats-stats,
-    .mainDrawer,
-    .emby-tabs-slider,
-    .videoOsdBottom .osdControls,
-    .nowPlayingBar {
-        -webkit-backdrop-filter: blur(var(--usher-glass-blur)) !important;
-        backdrop-filter: blur(var(--usher-glass-blur)) !important;
-    }
+  .dialog, .toast, .upNextContainer, .playerStats-stats,
+  .mainDrawer, .emby-tabs-slider,
+  .videoOsdBottom .osdControls, .nowPlayingBar {
+    -webkit-backdrop-filter: var(--usher-blur) !important;
+    backdrop-filter: var(--usher-blur) !important;
+  }
 }
 
-/* 10. DETAIL PAGE */
+.upNextContainer .btnStartNow,
+.upNextDialog-countdownText { color: var(--usher-accent) !important; }
+
+.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--usher-accent); }
+
+/* ── DETAIL PAGE ── */
 .detailPagePrimaryContainer,
-.detailPageWrapperContainer {
-    background-color: var(--usher-bg) !important;
-}
+.detailPageWrapperContainer { background-color: var(--usher-bg) !important; }
 
-#itemDetailPage .btnPlay {
-    background: var(--usher-accent-solid) !important;
-    color: #fff !important;
-}
-
-#itemDetailPage .btnPlay:hover {
-    filter: brightness(1.1);
-}
+#itemDetailPage .btnPlay { background: var(--usher-accent) !important; color: #fff !important; }
+#itemDetailPage .btnPlay:hover { filter: brightness(1.1); }
 
 .detailImageContainer .cardImageContainer,
-.detailImageContainer .card {
-    border-radius: var(--usher-radius-lg) !important;
+.detailImageContainer .card { border-radius: var(--usher-radius-lg) !important; }
+
+.starIcon {
+  background: linear-gradient(to right, var(--usher-accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* 11. MEDIA PLAYER / OSD */
+/* ── MEDIA PLAYER / OSD ── */
 .nowPlayingBar,
 .videoOsdBottom .osdControls {
-    background-color: rgba(var(--usher-glass-tint), 0.9) !important;
-    border-radius: var(--usher-radius-lg);
+  background-color: var(--usher-glass-tint) !important;
+  border-radius: var(--usher-radius-lg);
 }
 
-.mdl-slider-background-lower,
-.mdl-slider::-webkit-slider-thumb {
-    background-color: var(--usher-accent-solid) !important;
+.skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
+  background-color: rgba(0, 0, 0, 0.88);
+  border: 1px solid var(--usher-accent);
+  color: white;
+  border-radius: var(--usher-radius-sm);
 }
+.skip-button:hover, #introSkipperButton:hover { background-color: var(--usher-accent); }
 
-.sliderMarker.watched {
-    background: var(--usher-accent-solid) !important;
-}
-
-.upNextDialog-countdownText {
-    color: var(--usher-accent-solid) !important;
-}
-
-/* 12. LOGIN PAGE */
+/* ── LOGIN PAGE ── */
 #loginPage {
-    background-color: var(--usher-bg) !important;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(13, 13, 13, 0.95)) !important;
 }
 
-.manualLoginForm {
-    background-color: rgba(var(--usher-glass-tint), 0.9);
-    border-radius: var(--usher-radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+#loginPage .padded-left.padded-right.padded-bottom-page {
+  background: rgba(0, 0, 0, 0.82);
+  border-radius: var(--usher-radius-lg);
+  border: 1px solid var(--usher-border);
+  box-shadow: 0 0 40px var(--usher-accent-dim);
 }
 
-/* 13. FORM INPUTS */
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--usher-accent) !important; }
+
+/* ── FORM INPUTS ── */
 .emby-input,
 .emby-textarea,
 .emby-select-withcolor,
 .checkboxOutline {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 8px !important;
+  border: var(--usher-border-w) solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: var(--usher-radius-xs) !important;
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .emby-input:focus,
 .emby-textarea:focus,
 .emby-select-withcolor:focus,
-.checkboxOutline:focus {
-    border-color: var(--usher-accent-solid) !important;
-}
+.checkboxOutline:focus { border-color: var(--usher-accent) !important; }
 
 input[type="checkbox"]:checked ~ .checkboxOutline,
 input[type="checkbox"]:checked + .checkboxOutline {
-    background: var(--usher-accent-solid) !important;
-    border-color: var(--usher-accent-solid) !important;
+  background: var(--usher-accent) !important;
+  border-color: var(--usher-accent) !important;
 }
 
-.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
-    background: rgba(var(--usher-accent), 0.5);
+/* ── TABLES / DASHBOARD ── */
+table:not(.MuiTable-root.MuiTable-stickyHeader) {
+  border: var(--usher-border-w) solid var(--usher-border) !important;
+  border-radius: var(--usher-radius-sm);
+  background: rgb(10, 10, 12);
 }
 
-.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
-    background: var(--usher-accent-solid);
+.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(0, 0, 0, 0.5) !important; }
+.detailTableBodyRow-shaded:nth-child(even) { background: rgba(255, 255, 255, 0.03) !important; }
+
+.Mui-selected { background-color: var(--usher-accent) !important; }
+.MuiDrawer-paper { background: var(--usher-drawer-bg); }
+.MuiAppBar-root { background: var(--usher-header-bg); }
+
+/* ── TV GUIDE ── */
+.guideProgramName { background-color: var(--usher-accent-dim); border-radius: var(--usher-radius-xs); }
+.programCell-active .guideProgramName { background-color: rgba(124, 58, 237, 0.25); }
+.guide-channelHeaderCell { background-color: var(--usher-accent-dim); border-radius: var(--usher-radius-sm); }
+
+/* ── RESPONSIVE / LAYOUT HOOKS ── */
+.layout-mobile .detailPagePrimaryContainer { background: transparent; }
+.layout-tv .emby-tab-button { padding: 0.4em 1.3em; }
+.layout-tv .card:focus .cardBox { border-width: 3px !important; }
+
+/* Mobile touch target fix */
+.headerButton,
+.headerButton.headerButtonLeft,
+.headerButton.headerButtonRight,
+.headerUserButton,
+.headerCastButton,
+.headerSyncButton {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
 }
 
-/* 14. RESPONSIVE — mobile / tv layout hooks (present since these classes are applied at the body/page level regardless of layout engine) */
-.layout-mobile .detailPagePrimaryContainer {
-    background: transparent;
-}
-
-.layout-tv .emby-tab-button {
-    padding: 0.4em 1.3em;
-}
-
-.layout-tv .card:focus .cardBox {
-    border-width: 3px !important;
-}
+.headerButton .material-icons,
+.headerButton .material-icons-round { font-size: 26px !important; }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-    }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
