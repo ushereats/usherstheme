@@ -1,0 +1,115 @@
+/* Jellyfin Custom Theme — Dark/Minimal
+   Install: Dashboard > General > Custom CSS > paste this entire file > Save > hard-refresh (Ctrl+Shift+R) */
+
+:root {
+  --theme-bg: #0d0f12;
+  --theme-surface: #16191d;
+  --theme-surface-2: #1e2227;
+  --theme-accent: #7c3aed;
+  --theme-accent-hover: #9061f9;
+  --theme-text: #e6e8eb;
+  --theme-text-dim: #9aa0a6;
+  --theme-border: #2a2e34;
+}
+
+body {
+  background-color: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.skinHeader {
+  background-color: var(--theme-surface) !important;
+  border-bottom: 1px solid var(--theme-border) !important;
+}
+
+.emby-tab-button {
+  color: var(--theme-text-dim) !important;
+}
+
+.emby-tab-button.emby-tab-button-active {
+  color: var(--theme-text) !important;
+}
+
+.emby-tab-button.emby-tab-button-active .emby-button-foreground::after {
+  background-color: var(--theme-accent) !important;
+}
+
+.cardOverlayButton,
+.itemAction {
+  color: var(--theme-text) !important;
+}
+
+.emby-button.raised,
+.raised.button-submit {
+  background-color: var(--theme-accent) !important;
+  color: #fff !important;
+}
+
+.emby-button.raised:hover,
+.raised.button-submit:hover {
+  background-color: var(--theme-accent-hover) !important;
+}
+
+.cardBox,
+.card .cardBox {
+  background-color: var(--theme-surface) !important;
+}
+
+.cardText,
+.cardText-first,
+.cardText-secondary {
+  color: var(--theme-text) !important;
+}
+
+.detailPagePrimaryContainer,
+.detailPageWrapperContainer {
+  background-color: var(--theme-bg) !important;
+}
+
+.detailImageContainer,
+.itemBackdrop {
+  border-radius: 6px;
+}
+
+.sectionTitleTextButton,
+.sectionTitle {
+  color: var(--theme-text) !important;
+  font-weight: 600;
+}
+
+.progressring__fill {
+  stroke: var(--theme-accent) !important;
+}
+
+.itemProgressBar {
+  background-color: var(--theme-accent) !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--theme-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-surface-2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent);
+}
+
+/* Login/splash */
+.background-container,
+.login-page {
+  background-color: var(--theme-bg) !important;
+}
+
+/* Remove excess whitespace on card grids */
+.padded-left,
+.padded-right {
+  padding-left: 2%;
+  padding-right: 2%;
+}
