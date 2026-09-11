@@ -1,507 +1,486 @@
 /* ============================================================
-   USHER'S THEME — Netflix Edition v2
-   Jellyfin 12.0 — Desktop / Web / TV / Mobile
+   USHER'S THEME — Futurist Minimal
+   Jellyfin 12.0 only
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
   color-scheme: dark;
 
-  --nf-red: rgb(229, 9, 20);
-  --nf-red-dim: rgba(229, 9, 20, 0.18);
-  --nf-red-bright: rgb(248, 30, 42);
+  --fx-accent: rgb(0, 229, 255);
+  --fx-accent-dim: rgba(0, 229, 255, 0.14);
+  --fx-accent-bright: rgb(80, 245, 255);
 
-  --nf-bg: #000000;
-  --nf-surface: rgb(24, 24, 24);
-  --nf-surface-2: rgb(38, 38, 38);
-  --nf-glass: rgba(18, 18, 18, 0.94);
+  --fx-bg: #050505;
+  --fx-surface: rgb(13, 13, 13);
+  --fx-surface-2: rgb(20, 20, 20);
+  --fx-glass: rgba(8, 8, 8, 0.92);
 
-  --nf-border: rgba(255, 255, 255, 0.08);
+  --fx-line: rgba(255, 255, 255, 0.09);
+  --fx-line-bright: rgba(255, 255, 255, 0.18);
 
-  --nf-text: #ffffff;
-  --nf-text-dim: rgb(179, 179, 179);
-  --nf-text-dimmer: rgb(115, 115, 115);
+  --fx-text: #f2f2f2;
+  --fx-text-dim: rgb(150, 150, 150);
+  --fx-text-dimmer: rgb(90, 90, 90);
 
-  --nf-radius: 3px;
-  --nf-radius-lg: 6px;
+  --fx-radius: 2px;
+  --fx-radius-lg: 3px;
 
-  --nf-blur: blur(16px);
-  --nf-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --nf-ease-hover: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --fx-mono: "JetBrains Mono", monospace;
+  --fx-sans: "Space Grotesk", "Inter", sans-serif;
 
-  --nf-app-bar-height: 4.2em;
-
-  --nf-header-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
-  --nf-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.7) 55%, transparent 100%);
-  --nf-backdrop-fade: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 55%, var(--nf-bg) 100%),
-                      linear-gradient(90deg, var(--nf-bg) 0%, transparent 45%);
+  --fx-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --fx-app-bar-height: 4em;
 }
 
 /* ── BASE ── */
-html {
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-weight: 400;
-}
-
-body {
-  background-color: var(--nf-bg) !important;
-  overscroll-behavior: none;
-}
+html { font-family: var(--fx-sans); -webkit-font-smoothing: antialiased; font-weight: 400; }
+body { background-color: var(--fx-bg) !important; overscroll-behavior: none; }
 
 .pageTitle, .sectionTitle, h1, h2, h3 {
-  font-family: "Bebas Neue", "Inter", sans-serif;
+  font-family: var(--fx-sans);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-::selection { background: var(--nf-red-dim); color: #fff; }
-::-moz-selection { background: var(--nf-red-dim); color: #fff; }
-:focus-visible { outline: 2px solid var(--nf-red) !important; outline-offset: 2px; }
+::selection { background: var(--fx-accent-dim); color: #fff; }
+::-moz-selection { background: var(--fx-accent-dim); color: #fff; }
+:focus-visible { outline: 1px solid var(--fx-accent) !important; outline-offset: 2px; }
 
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--nf-bg); }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--nf-red); }
-* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.25) var(--nf-bg); }
+::-webkit-scrollbar { width: 2px; height: 2px; }
+::-webkit-scrollbar-track { background: var(--fx-bg); }
+::-webkit-scrollbar-thumb { background: var(--fx-accent); }
+* { scrollbar-width: thin; scrollbar-color: var(--fx-accent) var(--fx-bg); }
 
 input[type="checkbox"]:checked,
-input[type="radio"]:checked { accent-color: var(--nf-red); }
+input[type="radio"]:checked { accent-color: var(--fx-accent); }
 
-/* ── HEADER — transparent at top, solid on scroll ── */
+/* ── HEADER — hairline, no gradient soup ── */
 .skinHeader {
-  background: var(--nf-header-gradient) !important;
-  border-bottom: none !important;
-  transition: background 0.35s var(--nf-ease);
-}
-
-.skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background: rgba(0, 0, 0, 0.96) !important;
-  backdrop-filter: none;
-  border-bottom: 1px solid var(--nf-border) !important;
+  background: var(--fx-bg) !important;
+  border-bottom: 1px solid var(--fx-line) !important;
 }
 
 .skinHeader-withBackground.semiTransparent {
-  background: var(--nf-header-gradient) !important;
-  border: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0.85), transparent) !important;
+  border: none !important;
 }
 
-.headerTop {
-  align-items: center;
-  height: var(--nf-app-bar-height);
-  padding: 0 4%;
-}
+.headerTop { align-items: center; height: var(--fx-app-bar-height); padding: 0 3%; }
+.headerUserButtonRound { border-radius: var(--fx-radius) !important; }
 
-/* Netflix profile icon = rounded square, not circle */
-.headerUserButtonRound {
-  border-radius: 4px !important;
-}
-
-.headroom { transition: transform 0.4s var(--nf-ease); }
-.headroom--unpinned { transform: translateY(calc(-1 * var(--nf-app-bar-height))); }
+.headroom { transition: transform 0.3s var(--fx-ease); }
+.headroom--unpinned { transform: translateY(calc(-1 * var(--fx-app-bar-height))); }
 
 .pageTitle {
-  font-size: 1.7em !important;
-  color: #fff !important;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-size: 1.1em !important;
+  color: var(--fx-text) !important;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* ── TOP NAV TABS — Netflix style: bold white active, gray inactive, no underline ── */
+/* ── NAV TABS — underline hairline, monospace index feel ── */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
-  margin: 0 1.3em 0 0;
-  padding: 0.3em 0;
+  margin: 0 1.6em 0 0;
+  padding: 0.5em 0;
   height: auto;
   border-radius: 0;
   background: transparent !important;
-  color: var(--nf-text-dim);
+  color: var(--fx-text-dim);
   font-weight: 400;
-  font-size: 0.95em;
-  border-bottom: none;
-  transition: color 0.15s, font-weight 0.15s;
+  font-size: 0.82em;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
 }
 
 .sectionTabs .emby-tab-button-active {
-  color: #fff !important;
+  color: var(--fx-accent) !important;
   background: transparent !important;
-  font-weight: 700;
+  border-bottom: 1px solid var(--fx-accent) !important;
 }
 
 .sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) {
-  color: #fff;
+  color: var(--fx-text);
 }
 
 .emby-tabs-slider { background: transparent; padding: 0; }
 
-/* ── NAV DRAWER ── */
+/* ── NAV DRAWER — flat, hairline dividers, no blur ── */
 .mainDrawer {
-  background-color: rgba(8, 8, 8, 0.98);
-  border-right: 1px solid var(--nf-border);
-  backdrop-filter: var(--nf-blur);
+  background-color: var(--fx-bg);
+  border-right: 1px solid var(--fx-line);
 }
 
 .navMenuOption {
-  border-radius: var(--nf-radius) !important;
-  margin: 0.15em 0.7em !important;
-  padding: 0.65em 1em !important;
-  color: var(--nf-text-dim) !important;
-  font-weight: 500;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0.75em 1.2em !important;
+  color: var(--fx-text-dim) !important;
+  font-weight: 400;
+  font-size: 0.88em;
+  letter-spacing: 0.4px;
+  border-left: 2px solid transparent;
   transition: all 0.15s !important;
 }
 
-.navMenuOption .material-icons { color: var(--nf-text-dimmer); transition: color 0.15s; }
+.navMenuOption .material-icons { color: var(--fx-text-dimmer); transition: color 0.15s; }
 
 .navMenuOption-selected {
-  background-color: var(--nf-red) !important;
-  color: #fff !important;
+  background-color: var(--fx-accent-dim) !important;
+  color: var(--fx-accent) !important;
+  border-left: 2px solid var(--fx-accent) !important;
 }
-.navMenuOption-selected .material-icons { color: #fff !important; }
+.navMenuOption-selected .material-icons { color: var(--fx-accent) !important; }
 
 .navMenuOption:hover:not(.navMenuOption-selected) {
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: #fff !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--fx-text) !important;
+  border-left: 2px solid var(--fx-line-bright) !important;
 }
-.navMenuOption:hover .material-icons { color: #fff !important; }
+.navMenuOption:hover .material-icons { color: var(--fx-text) !important; }
 
 .navMenuOptionIcon,
 .listItemIcon:not(.listItemIcon-transparent) {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: var(--nf-radius);
+  background-color: transparent !important;
+  border-radius: 0;
 }
 
 .mainDrawer-scrollContainer > h3 {
-  font-family: "Inter", sans-serif;
-  font-size: 0.66rem;
-  letter-spacing: 2px;
+  font-family: var(--fx-mono);
+  font-size: 0.62rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--nf-text-dimmer);
-  margin: 1.4em 1.2em 0.3em 1.2em;
-  font-weight: 700;
+  color: var(--fx-text-dimmer);
+  margin: 1.6em 1.2em 0.4em 1.2em;
+  font-weight: 500;
 }
 
-/* ── CARDS — sharp corners, deep hover scale, delayed intent ── */
+/* ── CARDS — sharp edges, hairline border, no shadow soup ── */
 .cardScalable {
-  border-radius: var(--nf-radius);
-  border: none !important;
+  border-radius: var(--fx-radius);
+  border: 1px solid var(--fx-line) !important;
   overflow: hidden !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  transition: transform 0.3s var(--nf-ease-hover) 0.1s, box-shadow 0.3s var(--nf-ease-hover) 0.1s;
-  transform-origin: center;
+  box-shadow: none;
+  transition: border-color 0.2s var(--fx-ease);
 }
 
 .card-hoverable:hover .cardScalable {
-  transform: scale(1.35);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
-  z-index: 20;
-  position: relative;
+  border-color: var(--fx-accent) !important;
 }
 
 .card-hoverable:hover .cardImageContainer { transform: none; }
 
 .cardBox,
-.card .cardBox { background-color: var(--nf-surface) !important; }
+.card .cardBox { background-color: var(--fx-surface) !important; }
 
-.cardText { color: var(--nf-text-dim) !important; font-weight: 400; font-size: 0.92em; }
-.cardText-first { color: #fff !important; font-weight: 600; font-size: 0.95em; }
-.cardText-secondary { color: var(--nf-text-dimmer) !important; font-size: 0.85em; }
+.cardText { color: var(--fx-text-dim) !important; font-weight: 400; font-size: 0.85em; }
+.cardText-first { color: var(--fx-text) !important; font-weight: 500; font-size: 0.9em; letter-spacing: 0.2px; }
+.cardText-secondary { color: var(--fx-text-dimmer) !important; font-size: 0.78em; font-family: var(--fx-mono); }
 
 .card:focus .cardBox.visualCardBox,
 .card:focus .cardBox:not(.visualCardBox) .cardScalable {
-  border: none !important;
-  box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--nf-red) !important;
+  border: 1px solid var(--fx-accent) !important;
+  box-shadow: 0 0 0 1px var(--fx-accent) !important;
 }
 
 .innerCardFooter,
 .chapterThumbTextContainer {
-  background: var(--nf-card-footer-gradient);
-  text-shadow: 0.08em 0.08em 0.15em rgba(0, 0, 0, 0.95);
-  opacity: 0;
-  transition: opacity 0.2s var(--nf-ease) 0.15s;
-}
-
-.card-hoverable:hover .innerCardFooter,
-.card-hoverable:hover .chapterThumbTextContainer {
-  opacity: 1;
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+  text-shadow: none;
 }
 
 .cardOverlayContainer {
   background: transparent;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
 }
 .card-hoverable:hover .cardOverlayContainer {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 229, 255, 0.04);
 }
 
-/* Play button — Netflix solid white circle, black glyph, appears on hover */
+/* Play button — sharp square, outline only, accent glow on hover */
 .cardOverlayContainer > .cardOverlayFab-primary,
 .listItemImageButton,
 .layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
-  background-color: #fff !important;
-  color: #000 !important;
-  border: none !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.15s var(--nf-ease) 0.15s, transform 0.15s var(--nf-ease) 0.15s, background 0.15s;
-}
-.card-hoverable:hover .cardOverlayContainer > .cardOverlayFab-primary,
-.layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
-  opacity: 1;
-  transform: scale(1);
+  background-color: rgba(5, 5, 5, 0.85) !important;
+  color: var(--fx-accent) !important;
+  border: 1px solid var(--fx-accent) !important;
+  border-radius: var(--fx-radius) !important;
+  box-shadow: none !important;
+  transition: background 0.15s, box-shadow 0.15s !important;
 }
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
-.listItemImageButton:hover { background-color: rgba(255, 255, 255, 0.75) !important; }
+.listItemImageButton:hover {
+  background-color: var(--fx-accent) !important;
+  color: #000 !important;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.5) !important;
+}
 .cardOverlayContainer > .cardOverlayFab-primary:active,
-.listItemImageButton:active { transform: scale(0.92) !important; }
+.listItemImageButton:active { transform: scale(0.94) !important; }
 
-/* Secondary round buttons on hover (add/like/menu) — Netflix outlined circles */
 .layout-desktop .cardOverlayButton-br button {
-  background: rgba(42, 42, 42, 0.6) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
-  border-radius: 50% !important;
-  color: #fff !important;
-  opacity: 0;
-  transition: opacity 0.15s var(--nf-ease) 0.15s, border-color 0.15s;
+  background: rgba(5, 5, 5, 0.7) !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius) !important;
+  color: var(--fx-text) !important;
 }
-.card-hoverable:hover .cardOverlayButton-br button { opacity: 1; }
 .layout-desktop .cardOverlayButton-br button:hover {
-  border-color: #fff !important;
+  border-color: var(--fx-accent) !important;
+  color: var(--fx-accent) !important;
 }
 
-/* ── PROGRESS / INDICATORS — Netflix thin red line ── */
+/* ── PROGRESS / INDICATORS — 1px hairline, no glow ── */
 .itemProgressBar {
-  background: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   border-radius: 0;
-  height: 3px !important;
+  height: 2px !important;
 }
 
 .itemProgressBarForeground,
 .playbackProgress > div {
-  background-color: var(--nf-red) !important;
+  background-color: var(--fx-accent) !important;
   border-radius: 0;
 }
 
 .countIndicator {
-  background: var(--nf-red);
-  border-radius: 4px !important;
-  font-weight: 700;
-  font-size: 0.75em;
+  background: var(--fx-bg);
+  border: 1px solid var(--fx-accent);
+  color: var(--fx-accent) !important;
+  border-radius: var(--fx-radius) !important;
+  font-family: var(--fx-mono);
+  font-size: 0.7em;
 }
 
 .playedIndicator {
-  background: rgba(0, 0, 0, 0.75);
-  border: 2px solid #fff;
-  border-radius: 50% !important;
+  background: var(--fx-bg);
+  border: 1px solid var(--fx-text-dim);
+  border-radius: var(--fx-radius) !important;
 }
 
 .mediaSourceIndicator {
-  background: rgba(0, 0, 0, 0.75);
-  border: 1px solid var(--nf-border);
+  background: var(--fx-bg);
+  border: 1px solid var(--fx-line);
+  border-radius: var(--fx-radius);
+  font-family: var(--fx-mono);
 }
 
-.progressring-spiner { border-color: var(--nf-red) !important; }
+.progressring-spiner { border-color: var(--fx-accent) !important; }
 
 .mdl-slider-background-lower,
 .mdl-slider::-webkit-slider-thumb,
-.mdl-slider::-moz-range-thumb { background-color: var(--nf-red) !important; }
+.mdl-slider::-moz-range-thumb { background-color: var(--fx-accent) !important; }
 
-.sliderMarker.watched { background-color: var(--nf-red) !important; }
-.iconOsdProgressInner { background: var(--nf-red) !important; }
+.mdl-slider::-webkit-slider-thumb { border-radius: 1px; }
+
+.sliderMarker.watched { background-color: var(--fx-accent) !important; }
+.iconOsdProgressInner { background: var(--fx-accent) !important; }
 
 .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
-  background: var(--nf-red-dim);
+  background: var(--fx-accent-dim);
 }
 .mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
-  background: var(--nf-red);
+  background: var(--fx-accent);
 }
 
-/* ── BUTTONS ── */
+/* ── BUTTONS — sharp, outline-first ── */
 .raised,
 .fab,
 a[data-role="button"] {
-  background: rgba(109, 109, 110, 0.5) !important;
-  color: #fff;
-  border: none;
-  border-radius: var(--nf-radius);
-  font-weight: 600;
-  transition: background 0.15s !important;
+  background: transparent !important;
+  color: var(--fx-text);
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 0.85em;
+  transition: all 0.15s !important;
 }
 .raised:hover,
 .fab:hover,
 a[data-role="button"]:hover {
-  background: rgba(109, 109, 110, 0.8) !important;
+  border-color: var(--fx-accent) !important;
+  color: var(--fx-accent) !important;
 }
-.raised:active, .fab:active, .emby-button:active { filter: brightness(1.1) !important; }
+.raised:active, .fab:active, .emby-button:active { filter: brightness(1.2) !important; }
 
 .button-submit,
 .raised.button-submit {
-  background: var(--nf-red) !important;
-  color: #fff !important;
-  font-weight: 700;
+  background: var(--fx-accent) !important;
+  color: #000 !important;
+  border: 1px solid var(--fx-accent) !important;
+  font-weight: 600;
 }
-.button-submit:hover { background: var(--nf-red-bright) !important; }
+.button-submit:hover { background: var(--fx-accent-bright) !important; }
 
 #btnDeleteImage, .button-delete, .btnRevoke, #btnShutdown {
-  background: rgb(140, 20, 20) !important;
+  background: transparent !important;
+  border: 1px solid rgb(255, 60, 60) !important;
+  color: rgb(255, 60, 60) !important;
 }
 
 .button-flat:hover,
-.button-link:hover { color: var(--nf-red-bright) !important; }
+.button-link:hover { color: var(--fx-accent) !important; }
 
 .btnPlay.detailButton {
-  background-color: #fff !important;
+  background-color: var(--fx-accent) !important;
   color: #000 !important;
-  border-radius: var(--nf-radius);
-  font-weight: 700;
-  font-size: 1.05em;
+  border-radius: var(--fx-radius);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-.btnPlay.detailButton:hover { background-color: rgba(255, 255, 255, 0.75) !important; }
+.btnPlay.detailButton:hover { background-color: var(--fx-accent-bright) !important; }
 
 .detailButton:not(.btnPlay) {
-  background: rgba(109, 109, 110, 0.4) !important;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  background: transparent !important;
+  border: 1px solid var(--fx-line-bright);
+  border-radius: var(--fx-radius);
 }
 .detailButton:not(.btnPlay):hover {
-  background: rgba(109, 109, 110, 0.4) !important;
-  border-color: #fff;
+  border-color: var(--fx-accent);
+  color: var(--fx-accent) !important;
 }
 
-/* ── DIALOGS / OVERLAYS / GLASS ── */
+/* ── DIALOGS — flat panel, hairline border, no heavy blur ── */
 .dialog,
 .toast,
 .upNextContainer,
 .playerStats-stats,
 .actionSheetContent,
 .manualLoginForm {
-  background-color: var(--nf-glass) !important;
-  border-radius: var(--nf-radius-lg) !important;
-  border: 1px solid var(--nf-border) !important;
+  background-color: var(--fx-glass) !important;
+  border-radius: var(--fx-radius-lg) !important;
+  border: 1px solid var(--fx-line) !important;
 }
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .dialog, .toast, .upNextContainer, .playerStats-stats,
-  .mainDrawer, .videoOsdBottom .osdControls, .nowPlayingBar {
-    -webkit-backdrop-filter: var(--nf-blur) !important;
-    backdrop-filter: var(--nf-blur) !important;
+  .dialog, .toast, .upNextContainer, .playerStats-stats, .mainDrawer {
+    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: blur(6px) !important;
   }
 }
 
 .upNextContainer .btnStartNow {
-  background-color: #fff !important;
+  background-color: var(--fx-accent) !important;
   color: #000 !important;
-  font-weight: 700;
 }
-.upNextDialog-countdownText { color: var(--nf-red) !important; }
+.upNextDialog-countdownText { color: var(--fx-accent) !important; font-family: var(--fx-mono); }
 
-.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--nf-red); }
+.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--fx-accent-dim); color: var(--fx-accent); }
 
-/* ── DETAIL PAGE — Netflix hero layout ── */
+/* ── DETAIL PAGE ── */
 .detailPagePrimaryContainer,
-.detailPageWrapperContainer { background-color: var(--nf-bg) !important; }
+.detailPageWrapperContainer { background-color: var(--fx-bg) !important; }
 
 .itemBackdrop { position: relative; }
 .itemBackdrop::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--nf-backdrop-fade);
-  pointer-events: none;
+  background: linear-gradient(180deg, transparent 40%, var(--fx-bg) 100%);
 }
 
 #itemDetailPage .btnPlay {
-  background: #fff !important;
+  background: var(--fx-accent) !important;
   color: #000 !important;
-  font-weight: 700;
+  font-weight: 600;
 }
-#itemDetailPage .btnPlay:hover { background: rgba(255, 255, 255, 0.75) !important; }
+#itemDetailPage .btnPlay:hover { background: var(--fx-accent-bright) !important; }
 
 .detailImageContainer .cardImageContainer,
-.detailImageContainer .card { border-radius: var(--nf-radius) !important; }
+.detailImageContainer .card { border-radius: var(--fx-radius) !important; border: 1px solid var(--fx-line); }
 
 .nameContainer > h1.itemName,
 .nameContainer > h1.parentName {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 4em;
-  letter-spacing: 0.01em;
-  color: #fff;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
-  line-height: 0.95;
+  font-family: var(--fx-sans);
+  font-weight: 600;
+  font-size: 3em;
+  letter-spacing: -0.01em;
+  color: var(--fx-text);
+  text-transform: none;
 }
 
-.subtitle {
-  color: var(--nf-text-dim);
-  font-weight: 500;
-}
+.subtitle { color: var(--fx-text-dim); font-weight: 400; font-family: var(--fx-mono); font-size: 0.9em; }
 
-.starIcon { color: var(--nf-red) !important; }
+.starIcon { color: var(--fx-accent) !important; }
 
 .mediaInfoOfficialRating {
-  border: 1px solid var(--nf-text-dimmer) !important;
-  color: var(--nf-text) !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  color: var(--fx-text) !important;
   background: transparent !important;
-  border-radius: 2px;
-  font-weight: 500;
+  border-radius: var(--fx-radius);
+  font-family: var(--fx-mono);
+  font-size: 0.8em;
 }
 
 .itemMiscInfo-primary .mediaInfoItem {
-  color: rgb(70, 211, 105);
-  font-weight: 700;
-}
-
-.tagline {
-  color: var(--nf-text-dim);
-  font-style: normal;
-  font-weight: 400;
+  font-family: var(--fx-mono);
+  color: var(--fx-text-dim);
 }
 
 /* ── MEDIA PLAYER / OSD ── */
 .nowPlayingBar,
 .videoOsdBottom .osdControls {
-  background-color: var(--nf-glass) !important;
-  border-radius: var(--nf-radius-lg);
+  background-color: var(--fx-glass) !important;
+  border-radius: var(--fx-radius-lg);
+  border: 1px solid var(--fx-line);
 }
 
 .skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
-  background-color: rgba(255, 255, 255, 0.92);
-  color: #000;
-  font-weight: 700;
-  border: none;
-  border-radius: var(--nf-radius);
-  letter-spacing: 0.3px;
+  background-color: var(--fx-bg);
+  border: 1px solid var(--fx-accent);
+  color: var(--fx-accent);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--fx-radius);
+  font-size: 0.8em;
 }
-.skip-button:hover, #introSkipperButton:hover { background-color: #fff; }
+.skip-button:hover, #introSkipperButton:hover {
+  background-color: var(--fx-accent);
+  color: #000;
+}
 
 /* ── LOGIN PAGE ── */
 #loginPage {
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(80, 0, 0, 0.4), transparent 65%), var(--nf-bg) !important;
+  background: var(--fx-bg) !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
+  background-size: 40px 40px !important;
 }
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: var(--nf-radius-lg);
-  border: 1px solid var(--nf-border);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-  padding: 3.5em 3.5em 1.5em !important;
+  background: var(--fx-surface);
+  border-radius: var(--fx-radius-lg);
+  border: 1px solid var(--fx-line);
+  padding: 3em 3em 1.5em !important;
 }
 
 #loginPage h1 { display: none; }
 
 #loginPage .raised.cancel.block.btnForgotPassword.emby-button {
   background: transparent !important;
-  color: var(--nf-text-dim) !important;
+  border: none !important;
+  color: var(--fx-text-dim) !important;
 }
-#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: #fff !important; }
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--fx-accent) !important; }
 
 .manualLoginForm::before {
   content: "USHER'S THEME";
   display: block;
   text-align: center;
-  font-family: "Bebas Neue", sans-serif;
-  color: var(--nf-red);
-  font-size: 2.4em;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.4em;
+  font-family: var(--fx-mono);
+  color: var(--fx-accent);
+  font-size: 1.1em;
+  letter-spacing: 4px;
+  margin-bottom: 1.5em;
+  text-transform: uppercase;
 }
 
 /* ── FORM INPUTS ── */
@@ -509,75 +488,73 @@ a[data-role="button"]:hover {
 .emby-textarea,
 .emby-select-withcolor,
 .checkboxOutline {
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: var(--nf-radius) !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  color: #fff !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius) !important;
+  background-color: transparent !important;
+  color: var(--fx-text) !important;
 }
 
 .emby-input:focus,
 .emby-textarea:focus,
 .emby-select-withcolor:focus,
-.checkboxOutline:focus { border-color: var(--nf-red) !important; }
+.checkboxOutline:focus { border-color: var(--fx-accent) !important; }
 
 input[type="checkbox"]:checked ~ .checkboxOutline,
 input[type="checkbox"]:checked + .checkboxOutline {
-  background: var(--nf-red) !important;
-  border-color: var(--nf-red) !important;
+  background: var(--fx-accent) !important;
+  border-color: var(--fx-accent) !important;
 }
 
 /* ── TABLES / DASHBOARD ── */
 table:not(.MuiTable-root.MuiTable-stickyHeader) {
-  border: 1px solid var(--nf-border) !important;
-  border-radius: var(--nf-radius);
-  background: var(--nf-surface);
+  border: 1px solid var(--fx-line) !important;
+  border-radius: var(--fx-radius);
+  background: var(--fx-surface);
 }
 
-.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(0, 0, 0, 0.4) !important; }
-.detailTableBodyRow-shaded:nth-child(even) { background: rgba(255, 255, 255, 0.02) !important; }
+.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(255, 255, 255, 0.015) !important; }
+.detailTableBodyRow-shaded:nth-child(even) { background: transparent !important; }
 
-.Mui-selected { background-color: var(--nf-red) !important; }
-.MuiDrawer-paper { background: rgba(8, 8, 8, 0.98); }
-.MuiAppBar-root { background: rgba(0, 0, 0, 0.96); }
+.Mui-selected { background-color: var(--fx-accent-dim) !important; color: var(--fx-accent) !important; }
+.MuiDrawer-paper { background: var(--fx-bg); }
+.MuiAppBar-root { background: var(--fx-bg); border-bottom: 1px solid var(--fx-line); }
 
 /* ── TV GUIDE ── */
-.guideProgramName { background-color: rgba(229, 9, 20, 0.12); border-radius: var(--nf-radius); }
-.programCell-active .guideProgramName { background-color: rgba(229, 9, 20, 0.3); }
-.guide-channelHeaderCell { background-color: rgba(255, 255, 255, 0.06); border-radius: var(--nf-radius); }
+.guideProgramName { background-color: transparent; border: 1px solid var(--fx-line); border-radius: var(--fx-radius); }
+.programCell-active .guideProgramName { border-color: var(--fx-accent); background: var(--fx-accent-dim); }
+.guide-channelHeaderCell { background-color: var(--fx-surface); border: 1px solid var(--fx-line); border-radius: var(--fx-radius); }
 
-/* ── HOME LIBRARY BUTTONS — Netflix top nav chips ── */
-.homeLibraryButton { border-radius: var(--nf-radius) !important; }
-.raised.homeLibraryButton { background: rgba(255, 255, 255, 0.08) !important; }
-.raised.homeLibraryButton:hover { background: rgba(255, 255, 255, 0.16) !important; }
+/* ── HOME LIBRARY BUTTONS ── */
+.homeLibraryButton { border-radius: var(--fx-radius) !important; }
+.raised.homeLibraryButton {
+  background: transparent !important;
+  border: 1px solid var(--fx-line-bright) !important;
+}
+.raised.homeLibraryButton:hover { border-color: var(--fx-accent) !important; color: var(--fx-accent) !important; }
 
-/* ── SECTION TITLES — Netflix row headers, bold, tight ── */
+/* ── SECTION TITLES ── */
 .sectionTitle {
-  color: #fff !important;
-  font-weight: 700;
-  font-size: 1.4em;
-  letter-spacing: 0.3px;
+  color: var(--fx-text) !important;
+  font-weight: 500;
+  font-size: 1.05em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* Row scroll arrows — visible on row hover only, black gradient buttons */
 .emby-scrollbuttons-button.paper-icon-button-light {
-  background: linear-gradient(90deg, rgba(0,0,0,0.7), transparent) !important;
-  border-radius: 0 !important;
+  background: var(--fx-bg) !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius) !important;
   opacity: 0;
   transition: opacity 0.2s;
 }
-.emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light {
-  opacity: 1;
-}
+.emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light { opacity: 1; }
 
 /* ── RESPONSIVE / LAYOUT HOOKS ── */
 .layout-mobile .detailPagePrimaryContainer { background: transparent; }
-.layout-mobile .cardScalable { transition: none; }
-.layout-mobile .card-hoverable:hover .cardScalable { transform: none; box-shadow: 0 1px 4px rgba(0,0,0,0.6); }
-
 .layout-tv .emby-tab-button { padding: 0.4em 1.3em; }
-.layout-tv .card:focus .cardBox { box-shadow: 0 0 0 4px var(--nf-red) !important; }
+.layout-tv .card:focus .cardBox { box-shadow: 0 0 0 2px var(--fx-accent) !important; }
 
-/* Mobile touch target fix */
 .headerButton,
 .headerButton.headerButtonLeft,
 .headerButton.headerButtonRight,
@@ -597,6 +574,5 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
   }
 }
