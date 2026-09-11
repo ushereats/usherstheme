@@ -1,115 +1,307 @@
-/* Jellyfin Custom Theme — Dark/Minimal
-   Install: Dashboard > General > Custom CSS > paste this entire file > Save > hard-refresh (Ctrl+Shift+R) */
+/* USHER'S THEME — Jellyfin 12.0
+   Structure and selector set modeled on confirmed-working Jellyfin community themes.
+   Install: Dashboard > General > Custom CSS > @import this file's raw/CDN URL, or paste inline. */
 
+/* 1. VARIABLES — override these to retint */
 :root {
-  --theme-bg: #0d0f12;
-  --theme-surface: #16191d;
-  --theme-surface-2: #1e2227;
-  --theme-accent: #7c3aed;
-  --theme-accent-hover: #9061f9;
-  --theme-text: #e6e8eb;
-  --theme-text-dim: #9aa0a6;
-  --theme-border: #2a2e34;
+    --usher-accent: 124, 58, 237;
+    --usher-accent-solid: #7c3aed;
+    --usher-bg: #0d0f12;
+    --usher-surface: 22, 25, 29;
+    --usher-glass-tint: 30, 34, 39;
+    --usher-radius: 12px;
+    --usher-radius-lg: 24px;
+    --usher-glass-blur: 15px;
+    --usher-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* 2. BASE */
 body {
-  background-color: var(--theme-bg) !important;
-  color: var(--theme-text) !important;
+    background-color: var(--usher-bg) !important;
+    overscroll-behavior: none;
 }
 
+::selection {
+    background: rgba(var(--usher-accent), 0.3);
+}
+
+:focus-visible {
+    outline-color: rgba(var(--usher-accent), 0.6) !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--usher-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--usher-accent), 0.6);
+    border-radius: var(--usher-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--usher-accent), 0.9);
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    accent-color: var(--usher-accent-solid);
+}
+
+/* 3. HEADER */
 .skinHeader {
-  background-color: var(--theme-surface) !important;
-  border-bottom: 1px solid var(--theme-border) !important;
+    background-color: rgba(var(--usher-surface), 0.85) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.headerUserButtonRound {
+    border-radius: 50px !important;
+}
+
+/* 4. NAV DRAWER */
+.mainDrawer {
+    background-color: rgba(var(--usher-glass-tint), 0.85);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navMenuOption {
+    border-radius: var(--usher-radius) !important;
+    margin-bottom: 2px !important;
+}
+
+.navMenuOption-selected {
+    background: var(--usher-accent-solid) !important;
+    color: #fff !important;
+}
+
+.navMenuOptionIcon,
+.listItemIcon {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 50px;
+}
+
+/* 5. TABS */
+.emby-tabs-slider {
+    background-color: rgba(var(--usher-glass-tint), 0.85);
+    border-radius: 50px;
+    padding: 5px;
 }
 
 .emby-tab-button {
-  color: var(--theme-text-dim) !important;
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.55);
 }
 
-.emby-tab-button.emby-tab-button-active {
-  color: var(--theme-text) !important;
+.emby-tab-button-active {
+    background: var(--usher-accent-solid) !important;
+    color: #fff !important;
+    border-radius: 50px;
 }
 
-.emby-tab-button.emby-tab-button-active .emby-button-foreground::after {
-  background-color: var(--theme-accent) !important;
+/* 6. BUTTONS */
+.raised,
+.fab,
+a[data-role="button"] {
+    background: rgba(255, 255, 255, 0.08) !important;
+    transition: background 0.3s var(--usher-ease), color 0.3s var(--usher-ease) !important;
 }
 
-.cardOverlayButton,
-.itemAction {
-  color: var(--theme-text) !important;
+.raised:hover,
+.fab:hover,
+a[data-role="button"]:hover {
+    background: var(--usher-accent-solid) !important;
+    color: #fff !important;
 }
 
-.emby-button.raised,
+.button-submit,
 .raised.button-submit {
-  background-color: var(--theme-accent) !important;
-  color: #fff !important;
+    background: var(--usher-accent-solid) !important;
+    color: #fff !important;
 }
 
-.emby-button.raised:hover,
-.raised.button-submit:hover {
-  background-color: var(--theme-accent-hover) !important;
+.button-flat:hover,
+.button-link {
+    color: var(--usher-accent-solid) !important;
 }
 
+/* 7. CARDS */
 .cardBox,
 .card .cardBox {
-  background-color: var(--theme-surface) !important;
+    background-color: rgba(var(--usher-surface), 1) !important;
+}
+
+.cardImageContainer {
+    border-radius: var(--usher-radius) !important;
 }
 
 .cardText,
-.cardText-first,
 .cardText-secondary {
-  color: var(--theme-text) !important;
+    color: rgba(255, 255, 255, 0.65) !important;
 }
 
+.cardText-first {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.card:focus .cardBox,
+.card:focus .cardScalable {
+    border: 2px solid var(--usher-accent-solid) !important;
+    border-radius: var(--usher-radius) !important;
+}
+
+/* 8. PROGRESS / INDICATORS */
+.itemProgressBar {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--usher-radius);
+}
+
+.itemProgressBarForeground,
+.playbackProgress > div {
+    background-color: var(--usher-accent-solid) !important;
+    border-radius: var(--usher-radius);
+}
+
+.countIndicator {
+    background: rgba(var(--usher-accent), 0.85);
+    border-radius: 10px !important;
+}
+
+.playedIndicator {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px !important;
+}
+
+.progressring-spiner {
+    border-color: var(--usher-accent-solid) !important;
+}
+
+/* 9. DIALOGS / OVERLAYS / GLASS */
+.dialog,
+.toast,
+.upNextContainer,
+.playerStats-stats,
+.actionSheetContent {
+    background-color: rgba(var(--usher-glass-tint), 0.92) !important;
+    border-radius: var(--usher-radius-lg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .dialog,
+    .toast,
+    .upNextContainer,
+    .playerStats-stats,
+    .mainDrawer,
+    .emby-tabs-slider,
+    .videoOsdBottom .osdControls,
+    .nowPlayingBar {
+        -webkit-backdrop-filter: blur(var(--usher-glass-blur)) !important;
+        backdrop-filter: blur(var(--usher-glass-blur)) !important;
+    }
+}
+
+/* 10. DETAIL PAGE */
 .detailPagePrimaryContainer,
 .detailPageWrapperContainer {
-  background-color: var(--theme-bg) !important;
+    background-color: var(--usher-bg) !important;
 }
 
-.detailImageContainer,
-.itemBackdrop {
-  border-radius: 6px;
+#itemDetailPage .btnPlay {
+    background: var(--usher-accent-solid) !important;
+    color: #fff !important;
 }
 
-.sectionTitleTextButton,
-.sectionTitle {
-  color: var(--theme-text) !important;
-  font-weight: 600;
+#itemDetailPage .btnPlay:hover {
+    filter: brightness(1.1);
 }
 
-.progressring__fill {
-  stroke: var(--theme-accent) !important;
+.detailImageContainer .cardImageContainer,
+.detailImageContainer .card {
+    border-radius: var(--usher-radius-lg) !important;
 }
 
-.itemProgressBar {
-  background-color: var(--theme-accent) !important;
+/* 11. MEDIA PLAYER / OSD */
+.nowPlayingBar,
+.videoOsdBottom .osdControls {
+    background-color: rgba(var(--usher-glass-tint), 0.9) !important;
+    border-radius: var(--usher-radius-lg);
 }
 
-/* Scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--theme-bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--theme-surface-2);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-accent);
+.mdl-slider-background-lower,
+.mdl-slider::-webkit-slider-thumb {
+    background-color: var(--usher-accent-solid) !important;
 }
 
-/* Login/splash */
-.background-container,
-.login-page {
-  background-color: var(--theme-bg) !important;
+.sliderMarker.watched {
+    background: var(--usher-accent-solid) !important;
 }
 
-/* Remove excess whitespace on card grids */
-.padded-left,
-.padded-right {
-  padding-left: 2%;
-  padding-right: 2%;
+.upNextDialog-countdownText {
+    color: var(--usher-accent-solid) !important;
+}
+
+/* 12. LOGIN PAGE */
+#loginPage {
+    background-color: var(--usher-bg) !important;
+}
+
+.manualLoginForm {
+    background-color: rgba(var(--usher-glass-tint), 0.9);
+    border-radius: var(--usher-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 13. FORM INPUTS */
+.emby-input,
+.emby-textarea,
+.emby-select-withcolor,
+.checkboxOutline {
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+}
+
+.emby-input:focus,
+.emby-textarea:focus,
+.emby-select-withcolor:focus,
+.checkboxOutline:focus {
+    border-color: var(--usher-accent-solid) !important;
+}
+
+input[type="checkbox"]:checked ~ .checkboxOutline,
+input[type="checkbox"]:checked + .checkboxOutline {
+    background: var(--usher-accent-solid) !important;
+    border-color: var(--usher-accent-solid) !important;
+}
+
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
+    background: rgba(var(--usher-accent), 0.5);
+}
+
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
+    background: var(--usher-accent-solid);
+}
+
+/* 14. RESPONSIVE — mobile / tv layout hooks (present since these classes are applied at the body/page level regardless of layout engine) */
+.layout-mobile .detailPagePrimaryContainer {
+    background: transparent;
+}
+
+.layout-tv .emby-tab-button {
+    padding: 0.4em 1.3em;
+}
+
+.layout-tv .card:focus .cardBox {
+    border-width: 3px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
