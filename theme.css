@@ -1,50 +1,48 @@
 /* ============================================================
-   USHER'S THEME — Netflix Edition
+   USHER'S THEME — Netflix Edition v2
    Jellyfin 12.0 — Desktop / Web / TV / Mobile
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
-/* ── ROOT TOKENS ── */
 :root {
   color-scheme: dark;
 
   --nf-red: rgb(229, 9, 20);
   --nf-red-dim: rgba(229, 9, 20, 0.18);
-  --nf-red-bright: rgb(255, 26, 26);
+  --nf-red-bright: rgb(248, 30, 42);
 
   --nf-bg: #000000;
-  --nf-bg-alt: #0a0a0a;
-  --nf-surface: rgb(20, 20, 20);
-  --nf-surface-2: rgb(35, 35, 35);
-  --nf-glass: rgba(20, 20, 20, 0.9);
+  --nf-surface: rgb(24, 24, 24);
+  --nf-surface-2: rgb(38, 38, 38);
+  --nf-glass: rgba(18, 18, 18, 0.94);
 
   --nf-border: rgba(255, 255, 255, 0.08);
-  --nf-border-red: rgba(229, 9, 20, 0.4);
 
   --nf-text: #ffffff;
-  --nf-text-dim: rgb(170, 170, 170);
-  --nf-text-dimmer: rgb(120, 120, 120);
+  --nf-text-dim: rgb(179, 179, 179);
+  --nf-text-dimmer: rgb(115, 115, 115);
 
-  --nf-radius-lg: 8px;
-  --nf-radius: 6px;
-  --nf-radius-sm: 4px;
+  --nf-radius: 3px;
+  --nf-radius-lg: 6px;
 
-  --nf-blur: blur(14px);
+  --nf-blur: blur(16px);
   --nf-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --nf-ease-hover: cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  --nf-app-bar-height: 4.5em;
+  --nf-app-bar-height: 4.2em;
 
-  --nf-header-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.4) 60%, transparent);
-  --nf-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.96) 10%, transparent 90%);
-  --nf-backdrop-fade: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 65%, var(--nf-bg) 100%);
+  --nf-header-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 55%, transparent 100%);
+  --nf-card-footer-gradient: linear-gradient(0deg, rgba(0, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.7) 55%, transparent 100%);
+  --nf-backdrop-fade: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.5) 55%, var(--nf-bg) 100%),
+                      linear-gradient(90deg, var(--nf-bg) 0%, transparent 45%);
 }
 
 /* ── BASE ── */
 html {
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-weight: 400;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-weight: 400;
 }
 
 body {
@@ -52,34 +50,33 @@ body {
   overscroll-behavior: none;
 }
 
-h1, h2, h3, .pageTitle, .sectionTitle {
+.pageTitle, .sectionTitle, h1, h2, h3 {
   font-family: "Bebas Neue", "Inter", sans-serif;
-  letter-spacing: 0.02em;
 }
 
 ::selection { background: var(--nf-red-dim); color: #fff; }
 ::-moz-selection { background: var(--nf-red-dim); color: #fff; }
-:focus-visible { outline-color: var(--nf-red) !important; }
+:focus-visible { outline: 2px solid var(--nf-red) !important; outline-offset: 2px; }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--nf-bg); }
-::-webkit-scrollbar-thumb { background: rgba(229, 9, 20, 0.6); border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--nf-red); }
-* { scrollbar-width: thin; scrollbar-color: rgba(229, 9, 20, 0.6) var(--nf-bg); }
+* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.25) var(--nf-bg); }
 
 input[type="checkbox"]:checked,
 input[type="radio"]:checked { accent-color: var(--nf-red); }
 
-/* ── HEADER ── */
+/* ── HEADER — transparent at top, solid on scroll ── */
 .skinHeader {
   background: var(--nf-header-gradient) !important;
   border-bottom: none !important;
-  transition: background 0.3s var(--nf-ease);
+  transition: background 0.35s var(--nf-ease);
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background: rgba(0, 0, 0, 0.92) !important;
-  backdrop-filter: var(--nf-blur);
+  background: rgba(0, 0, 0, 0.96) !important;
+  backdrop-filter: none;
   border-bottom: 1px solid var(--nf-border) !important;
 }
 
@@ -88,52 +85,57 @@ input[type="radio"]:checked { accent-color: var(--nf-red); }
   border: none;
 }
 
-.headerTop { align-items: center; height: var(--nf-app-bar-height); padding: 0 4%; }
-.headerUserButtonRound { border-radius: 4px !important; }
+.headerTop {
+  align-items: center;
+  height: var(--nf-app-bar-height);
+  padding: 0 4%;
+}
+
+/* Netflix profile icon = rounded square, not circle */
+.headerUserButtonRound {
+  border-radius: 4px !important;
+}
 
 .headroom { transition: transform 0.4s var(--nf-ease); }
-.headroom--unpinned {
-  transform: translateY(calc(-1 * var(--nf-app-bar-height)));
-}
+.headroom--unpinned { transform: translateY(calc(-1 * var(--nf-app-bar-height))); }
 
 .pageTitle {
-  font-size: 1.6em !important;
-  color: var(--nf-red) !important;
+  font-size: 1.7em !important;
+  color: #fff !important;
   font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-/* ── SECTION TABS ── */
+/* ── TOP NAV TABS — Netflix style: bold white active, gray inactive, no underline ── */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
-  margin: 0 1.2em 0 0;
-  padding: 0.4em 0;
+  margin: 0 1.3em 0 0;
+  padding: 0.3em 0;
   height: auto;
   border-radius: 0;
   background: transparent !important;
   color: var(--nf-text-dim);
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  font-weight: 400;
+  font-size: 0.95em;
+  border-bottom: none;
+  transition: color 0.15s, font-weight 0.15s;
 }
 
 .sectionTabs .emby-tab-button-active {
   color: #fff !important;
   background: transparent !important;
-  border-bottom: 2px solid var(--nf-red) !important;
+  font-weight: 700;
 }
 
 .sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) {
   color: #fff;
 }
 
-.emby-tabs-slider {
-  background: transparent;
-  padding: 0;
-}
+.emby-tabs-slider { background: transparent; padding: 0; }
 
 /* ── NAV DRAWER ── */
 .mainDrawer {
-  background-color: rgba(10, 10, 10, 0.97);
+  background-color: rgba(8, 8, 8, 0.98);
   border-right: 1px solid var(--nf-border);
   backdrop-filter: var(--nf-blur);
 }
@@ -164,113 +166,136 @@ input[type="radio"]:checked { accent-color: var(--nf-red); }
 .navMenuOptionIcon,
 .listItemIcon:not(.listItemIcon-transparent) {
   background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: var(--nf-radius-sm);
+  border-radius: var(--nf-radius);
 }
 
 .mainDrawer-scrollContainer > h3 {
   font-family: "Inter", sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 1.8px;
+  font-size: 0.66rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--nf-text-dimmer);
   margin: 1.4em 1.2em 0.3em 1.2em;
   font-weight: 700;
 }
 
-/* ── CARDS ── */
+/* ── CARDS — sharp corners, deep hover scale, delayed intent ── */
 .cardScalable {
   border-radius: var(--nf-radius);
-  border: 1px solid transparent !important;
+  border: none !important;
   overflow: hidden !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s var(--nf-ease), box-shadow 0.3s var(--nf-ease);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s var(--nf-ease-hover) 0.1s, box-shadow 0.3s var(--nf-ease-hover) 0.1s;
+  transform-origin: center;
 }
 
 .card-hoverable:hover .cardScalable {
-  transform: scale(1.06);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
-  z-index: 5;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  z-index: 20;
+  position: relative;
 }
 
-.card-hoverable:hover .cardImageContainer { transform: scale(1); }
+.card-hoverable:hover .cardImageContainer { transform: none; }
 
 .cardBox,
 .card .cardBox { background-color: var(--nf-surface) !important; }
 
-.cardText { color: var(--nf-text-dim) !important; font-weight: 400; }
-.cardText-first { color: #fff !important; font-weight: 600; }
-.cardText-secondary { color: var(--nf-text-dimmer) !important; }
+.cardText { color: var(--nf-text-dim) !important; font-weight: 400; font-size: 0.92em; }
+.cardText-first { color: #fff !important; font-weight: 600; font-size: 0.95em; }
+.cardText-secondary { color: var(--nf-text-dimmer) !important; font-size: 0.85em; }
 
 .card:focus .cardBox.visualCardBox,
 .card:focus .cardBox:not(.visualCardBox) .cardScalable {
-  border: 2px solid #fff !important;
-  box-shadow: 0 0 0 3px var(--nf-red) !important;
+  border: none !important;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--nf-red) !important;
 }
 
 .innerCardFooter,
 .chapterThumbTextContainer {
   background: var(--nf-card-footer-gradient);
-  text-shadow: 0.08em 0.08em 0.1em rgba(0, 0, 0, 0.9);
+  text-shadow: 0.08em 0.08em 0.15em rgba(0, 0, 0, 0.95);
+  opacity: 0;
+  transition: opacity 0.2s var(--nf-ease) 0.15s;
 }
 
-/* Card overlay hover tint — subtle, no gimmicky wipe */
+.card-hoverable:hover .innerCardFooter,
+.card-hoverable:hover .chapterThumbTextContainer {
+  opacity: 1;
+}
+
 .cardOverlayContainer {
   background: transparent;
-  transition: background 0.25s ease;
+  transition: background 0.2s ease;
 }
 .card-hoverable:hover .cardOverlayContainer {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.card-hoverable:hover .cardText-first {
-  color: #fff !important;
-}
-
-/* Play button on card hover — Netflix white circle, black glyph */
+/* Play button — Netflix solid white circle, black glyph, appears on hover */
 .cardOverlayContainer > .cardOverlayFab-primary,
 .listItemImageButton,
 .layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
   background-color: #fff !important;
   color: #000 !important;
   border: none !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
-  transition: background 0.15s, transform 0.15s !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s var(--nf-ease) 0.15s, transform 0.15s var(--nf-ease) 0.15s, background 0.15s;
+}
+.card-hoverable:hover .cardOverlayContainer > .cardOverlayFab-primary,
+.layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
+  opacity: 1;
+  transform: scale(1);
 }
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
-.listItemImageButton:hover {
-  background-color: #e6e6e6 !important;
-  transform: scale(1.08) !important;
-}
+.listItemImageButton:hover { background-color: rgba(255, 255, 255, 0.75) !important; }
 .cardOverlayContainer > .cardOverlayFab-primary:active,
-.listItemImageButton:active { transform: scale(0.95) !important; }
+.listItemImageButton:active { transform: scale(0.92) !important; }
 
-/* ── PROGRESS / INDICATORS ── */
+/* Secondary round buttons on hover (add/like/menu) — Netflix outlined circles */
+.layout-desktop .cardOverlayButton-br button {
+  background: rgba(42, 42, 42, 0.6) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 50% !important;
+  color: #fff !important;
+  opacity: 0;
+  transition: opacity 0.15s var(--nf-ease) 0.15s, border-color 0.15s;
+}
+.card-hoverable:hover .cardOverlayButton-br button { opacity: 1; }
+.layout-desktop .cardOverlayButton-br button:hover {
+  border-color: #fff !important;
+}
+
+/* ── PROGRESS / INDICATORS — Netflix thin red line ── */
 .itemProgressBar {
   background: rgba(255, 255, 255, 0.25) !important;
-  border-radius: 2px;
+  border-radius: 0;
   height: 3px !important;
 }
 
 .itemProgressBarForeground,
 .playbackProgress > div {
   background-color: var(--nf-red) !important;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .countIndicator {
   background: var(--nf-red);
   border-radius: 4px !important;
   font-weight: 700;
+  font-size: 0.75em;
 }
 
 .playedIndicator {
-  background: rgb(34, 197, 94);
+  background: rgba(0, 0, 0, 0.75);
+  border: 2px solid #fff;
   border-radius: 50% !important;
 }
 
 .mediaSourceIndicator {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   border: 1px solid var(--nf-border);
 }
 
@@ -297,14 +322,14 @@ a[data-role="button"] {
   background: rgba(109, 109, 110, 0.5) !important;
   color: #fff;
   border: none;
-  border-radius: var(--nf-radius-sm);
+  border-radius: var(--nf-radius);
   font-weight: 600;
   transition: background 0.15s !important;
 }
 .raised:hover,
 .fab:hover,
 a[data-role="button"]:hover {
-  background: rgba(109, 109, 110, 0.75) !important;
+  background: rgba(109, 109, 110, 0.8) !important;
 }
 .raised:active, .fab:active, .emby-button:active { filter: brightness(1.1) !important; }
 
@@ -323,21 +348,23 @@ a[data-role="button"]:hover {
 .button-flat:hover,
 .button-link:hover { color: var(--nf-red-bright) !important; }
 
-/* Play button — Netflix solid white */
 .btnPlay.detailButton {
   background-color: #fff !important;
   color: #000 !important;
-  border-radius: var(--nf-radius-sm);
+  border-radius: var(--nf-radius);
   font-weight: 700;
+  font-size: 1.05em;
 }
 .btnPlay.detailButton:hover { background-color: rgba(255, 255, 255, 0.75) !important; }
 
 .detailButton:not(.btnPlay) {
   background: rgba(109, 109, 110, 0.4) !important;
   border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
 }
 .detailButton:not(.btnPlay):hover {
-  background: rgba(109, 109, 110, 0.7) !important;
+  background: rgba(109, 109, 110, 0.4) !important;
+  border-color: #fff;
 }
 
 /* ── DIALOGS / OVERLAYS / GLASS ── */
@@ -363,20 +390,23 @@ a[data-role="button"]:hover {
 .upNextContainer .btnStartNow {
   background-color: #fff !important;
   color: #000 !important;
+  font-weight: 700;
 }
 .upNextDialog-countdownText { color: var(--nf-red) !important; }
 
 .actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--nf-red); }
 
-/* ── DETAIL PAGE ── */
+/* ── DETAIL PAGE — Netflix hero layout ── */
 .detailPagePrimaryContainer,
 .detailPageWrapperContainer { background-color: var(--nf-bg) !important; }
 
+.itemBackdrop { position: relative; }
 .itemBackdrop::after {
   content: "";
   position: absolute;
   inset: 0;
   background: var(--nf-backdrop-fade);
+  pointer-events: none;
 }
 
 #itemDetailPage .btnPlay {
@@ -392,10 +422,16 @@ a[data-role="button"]:hover {
 .nameContainer > h1.itemName,
 .nameContainer > h1.parentName {
   font-family: "Bebas Neue", sans-serif;
-  font-size: 3.5em;
-  letter-spacing: 0.02em;
+  font-size: 4em;
+  letter-spacing: 0.01em;
   color: #fff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9);
+  line-height: 0.95;
+}
+
+.subtitle {
+  color: var(--nf-text-dim);
+  font-weight: 500;
 }
 
 .starIcon { color: var(--nf-red) !important; }
@@ -404,6 +440,19 @@ a[data-role="button"]:hover {
   border: 1px solid var(--nf-text-dimmer) !important;
   color: var(--nf-text) !important;
   background: transparent !important;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.itemMiscInfo-primary .mediaInfoItem {
+  color: rgb(70, 211, 105);
+  font-weight: 700;
+}
+
+.tagline {
+  color: var(--nf-text-dim);
+  font-style: normal;
+  font-weight: 400;
 }
 
 /* ── MEDIA PLAYER / OSD ── */
@@ -414,25 +463,26 @@ a[data-role="button"]:hover {
 }
 
 .skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.92);
   color: #000;
   font-weight: 700;
   border: none;
-  border-radius: var(--nf-radius-sm);
+  border-radius: var(--nf-radius);
+  letter-spacing: 0.3px;
 }
 .skip-button:hover, #introSkipperButton:hover { background-color: #fff; }
 
 /* ── LOGIN PAGE ── */
 #loginPage {
-  background: radial-gradient(ellipse at top, rgba(60, 0, 0, 0.35), transparent 60%), var(--nf-bg) !important;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(80, 0, 0, 0.4), transparent 65%), var(--nf-bg) !important;
 }
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
-  background: rgba(0, 0, 0, 0.75);
-  border-radius: var(--nf-radius);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: var(--nf-radius-lg);
   border: 1px solid var(--nf-border);
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
-  padding: 3em 3em 1.5em !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  padding: 3.5em 3.5em 1.5em !important;
 }
 
 #loginPage h1 { display: none; }
@@ -449,9 +499,9 @@ a[data-role="button"]:hover {
   text-align: center;
   font-family: "Bebas Neue", sans-serif;
   color: var(--nf-red);
-  font-size: 2em;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5em;
+  font-size: 2.4em;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4em;
 }
 
 /* ── FORM INPUTS ── */
@@ -460,7 +510,7 @@ a[data-role="button"]:hover {
 .emby-select-withcolor,
 .checkboxOutline {
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: var(--nf-radius-sm) !important;
+  border-radius: var(--nf-radius) !important;
   background-color: rgba(255, 255, 255, 0.06) !important;
   color: #fff !important;
 }
@@ -479,7 +529,7 @@ input[type="checkbox"]:checked + .checkboxOutline {
 /* ── TABLES / DASHBOARD ── */
 table:not(.MuiTable-root.MuiTable-stickyHeader) {
   border: 1px solid var(--nf-border) !important;
-  border-radius: var(--nf-radius-sm);
+  border-radius: var(--nf-radius);
   background: var(--nf-surface);
 }
 
@@ -487,27 +537,43 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
 .detailTableBodyRow-shaded:nth-child(even) { background: rgba(255, 255, 255, 0.02) !important; }
 
 .Mui-selected { background-color: var(--nf-red) !important; }
-.MuiDrawer-paper { background: rgba(10, 10, 10, 0.97); }
-.MuiAppBar-root { background: rgba(0, 0, 0, 0.92); }
+.MuiDrawer-paper { background: rgba(8, 8, 8, 0.98); }
+.MuiAppBar-root { background: rgba(0, 0, 0, 0.96); }
 
 /* ── TV GUIDE ── */
-.guideProgramName { background-color: rgba(229, 9, 20, 0.12); border-radius: var(--nf-radius-sm); }
+.guideProgramName { background-color: rgba(229, 9, 20, 0.12); border-radius: var(--nf-radius); }
 .programCell-active .guideProgramName { background-color: rgba(229, 9, 20, 0.3); }
-.guide-channelHeaderCell { background-color: rgba(255, 255, 255, 0.06); border-radius: var(--nf-radius-sm); }
+.guide-channelHeaderCell { background-color: rgba(255, 255, 255, 0.06); border-radius: var(--nf-radius); }
 
-/* ── HOME LIBRARY BUTTONS ── */
-.homeLibraryButton {
-  border-radius: var(--nf-radius-sm) !important;
+/* ── HOME LIBRARY BUTTONS — Netflix top nav chips ── */
+.homeLibraryButton { border-radius: var(--nf-radius) !important; }
+.raised.homeLibraryButton { background: rgba(255, 255, 255, 0.08) !important; }
+.raised.homeLibraryButton:hover { background: rgba(255, 255, 255, 0.16) !important; }
+
+/* ── SECTION TITLES — Netflix row headers, bold, tight ── */
+.sectionTitle {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1.4em;
+  letter-spacing: 0.3px;
 }
-.raised.homeLibraryButton {
-  background: rgba(255, 255, 255, 0.08) !important;
+
+/* Row scroll arrows — visible on row hover only, black gradient buttons */
+.emby-scrollbuttons-button.paper-icon-button-light {
+  background: linear-gradient(90deg, rgba(0,0,0,0.7), transparent) !important;
+  border-radius: 0 !important;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-.raised.homeLibraryButton:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
+.emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light {
+  opacity: 1;
 }
 
 /* ── RESPONSIVE / LAYOUT HOOKS ── */
 .layout-mobile .detailPagePrimaryContainer { background: transparent; }
+.layout-mobile .cardScalable { transition: none; }
+.layout-mobile .card-hoverable:hover .cardScalable { transform: none; box-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+
 .layout-tv .emby-tab-button { padding: 0.4em 1.3em; }
 .layout-tv .card:focus .cardBox { box-shadow: 0 0 0 4px var(--nf-red) !important; }
 
@@ -531,5 +597,6 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
