@@ -5,11 +5,20 @@
    (headings only), no hover transforms.
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap");
+/* Only weight 700 is actually used anywhere below — 600/700/800 was
+   downloading two unused weight files for nothing. This cuts the font
+   fetch to roughly a third of its previous size. */
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@700&display=swap");
 
 :root {
   color-scheme: dark;
 
+  /* ── ACCENT — swap this one line to retheme everything ──
+     Presets, copy one in to try it:
+     Electric blue : #3b82f6
+     Amber         : #f59e0b
+     Hot pink       : #ec4899
+     Current (white/monochrome) below. */
   --ux-accent: #ffffff;
   --ux-accent-dim: rgba(255, 255, 255, 0.12);
   --ux-accent-2: #22c55e;
@@ -43,9 +52,14 @@ body { background-color: var(--ux-bg) !important; overscroll-behavior: none; }
 .pageTitle, .sectionTitle, h1, h2, h3,
 .nameContainer > h1.itemName, .nameContainer > h1.parentName {
   font-family: var(--ux-heading-font);
-  font-weight: 700;
   letter-spacing: 0.01em;
 }
+
+/* Weight tiers — hero title shouts loudest, page title quietest, so the
+   hierarchy reads at a glance instead of everything being the same volume. */
+.pageTitle { font-weight: 600; }
+.sectionTitle, h1, h2, h3 { font-weight: 700; }
+.nameContainer > h1.itemName, .nameContainer > h1.parentName { font-weight: 800; }
 
 ::selection { background: var(--ux-accent-dim); color: #fff; }
 ::-moz-selection { background: var(--ux-accent-dim); color: #fff; }
@@ -159,6 +173,17 @@ body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root.Mui-select
 .sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) { color: var(--ux-text); }
 .emby-tabs-slider { background: transparent; padding: 0; }
 
+/* Skip layout/paint entirely for card rows scrolled off-screen — only
+   calculated once they're about to enter view. Real browser-level
+   optimization, not a CSS trick; matters most on home pages with a dozen+
+   horizontal scroller rows. contain-intrinsic-size gives the browser a
+   placeholder height so the page doesn't jump when a row's real content
+   finally renders. */
+.itemsContainer, .emby-scroller {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
 /* ── CARDS ── */
 .cardScalable {
   border-radius: var(--ux-radius);
@@ -173,7 +198,19 @@ body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root.Mui-select
 .cardBox, .card .cardBox { background-color: var(--ux-surface) !important; }
 .cardText { color: var(--ux-text-dim) !important; font-weight: 400; font-size: 0.85em; }
 .cardText-first { color: var(--ux-text) !important; font-weight: 600; font-size: 0.9em; }
-.cardText-secondary { color: var(--ux-text-dimmer) !important; font-size: 0.78em; }
+
+/* Secondary metadata (year, episode count, whatever your card layout shows)
+   stays hidden at rest, fades in on hover only — cuts visual clutter across
+   a full grid while still being one click away. opacity-only transition:
+   no transform, no layout shift, doesn't add to the hover cost budget. */
+.cardText-secondary {
+  color: var(--ux-text-dimmer) !important;
+  font-size: 0.78em;
+  opacity: 0;
+  transition: opacity var(--ux-fast);
+}
+.card-hoverable:hover .cardText-secondary,
+.card-hoverable:focus-within .cardText-secondary { opacity: 1; }
 
 .card:focus .cardBox.visualCardBox,
 .card:focus .cardBox:not(.visualCardBox) .cardScalable { border: 1px solid var(--ux-accent) !important; }
@@ -293,6 +330,10 @@ body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root.Mui-select
 }
 .upNextContainer .btnStartNow { background-color: var(--ux-accent) !important; color: #000 !important; }
 .upNextDialog-countdownText { color: var(--ux-accent) !important; }
+/* Only :has() in this file — checked deliberately, since :has() forces the
+   browser to test descendants on every match attempt. Fine on a rarely-
+   triggered menu item; keep new additions off :has() where a plain
+   selector will do, especially anywhere card-grid-scale. */
 .actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--ux-accent-dim); color: var(--ux-accent); }
 
 /* ── DETAIL PAGE ── */
