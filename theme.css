@@ -745,3 +745,15 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── FIX: broken play-icon ligature on the hero Play button ──
+   .detailButton.btnPlay.play-button's ::before is meant to render a
+   play_arrow icon glyph, but the icon font isn't reaching it here,
+   so the browser falls back to showing the raw icon name as literal
+   text ("play_arrow" → reads as "PLAY ARROW"), stacking with the
+   .play-text span's "Play" to produce "PLAY ARROW PLAY". The text
+   label already says everything the icon was for, so just remove
+   the broken pseudo-element instead of chasing the font. */
+.btnPlay.play-button::before {
+  content: none !important;
+}
