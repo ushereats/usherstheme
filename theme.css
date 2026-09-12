@@ -1,6 +1,8 @@
 /* ============================================================
-   JELLYFIN 12.0 — ULTRA-PERFORMANCE FUTURISTIC THEME
-   Engineered for zero-lag performance & modern UI layout
+   USHER'S THEME v4 — Jellyfin 12.0 Modern Layout
+   Verified against real Modern-layout (React/MUI) selectors,
+   not guessed. Performance-first: zero blur, one webfont
+   (headings only), no hover transforms.
    ============================================================ */
 
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap");
@@ -8,152 +10,186 @@
 :root {
   color-scheme: dark;
 
-  /* Accent & Core Palette */
   --ux-accent: #ffffff;
-  --ux-accent-text: #000000;
   --ux-accent-dim: rgba(255, 255, 255, 0.12);
-  --ux-active: #10b981; /* Futuristic Emerald Green for watched/progress */
+  --ux-accent-2: #22c55e;
 
-  /* Dark OLED Surfaces (No blur overhead) */
-  --ux-bg: #050505;
-  --ux-surface: #0f0f0f;
-  --ux-surface-2: #161616;
-  --ux-panel: rgba(15, 15, 15, 0.98);
+  --ux-bg: #0a0a0a;
+  --ux-surface: #141414;
+  --ux-surface-2: #1c1c1c;
+  --ux-panel: rgba(18, 18, 18, 0.97); /* flat, no blur */
 
-  /* Lines & Borders */
   --ux-line: rgba(255, 255, 255, 0.08);
-  --ux-line-bright: rgba(255, 255, 255, 0.2);
+  --ux-line-bright: rgba(255, 255, 255, 0.16);
 
-  /* Typography */
-  --ux-text: #f8fafc;
-  --ux-text-dim: #94a3b8;
-  --ux-text-dimmer: #64748b;
+  --ux-text: #f5f5f5;
+  --ux-text-dim: rgb(158, 158, 158);
+  --ux-text-dimmer: rgb(100, 100, 100);
 
   --ux-radius: 2px;
+  --ux-radius-lg: 3px;
+
   --ux-heading-font: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --ux-body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --ux-fast: 0.1s ease;
+  --ux-fast: 0.12s ease;
   --ux-app-bar-height: 4em;
 }
 
-/* ── BASE & TYPOGRAPHY ── */
-html {
-  font-family: var(--ux-body-font);
-  -webkit-font-smoothing: antialiased;
-}
-body {
-  background-color: var(--ux-bg) !important;
-  overscroll-behavior: none;
-}
+/* ── BASE ── */
+html { font-family: var(--ux-body-font); -webkit-font-smoothing: antialiased; font-weight: 400; }
+body { background-color: var(--ux-bg) !important; overscroll-behavior: none; }
 
 .pageTitle, .sectionTitle, h1, h2, h3,
-.itemName, .parentName {
+.nameContainer > h1.itemName, .nameContainer > h1.parentName {
   font-family: var(--ux-heading-font);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
-::selection { background: rgba(255, 255, 255, 0.25); color: #ffffff; }
+::selection { background: var(--ux-accent-dim); color: #fff; }
+::-moz-selection { background: var(--ux-accent-dim); color: #fff; }
 :focus-visible { outline: 1px solid var(--ux-accent) !important; outline-offset: 2px; }
 
-/* Thin Scrollbars */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: var(--ux-bg); }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
-* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) var(--ux-bg); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); }
+* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.25) var(--ux-bg); }
 
-/* ── HEADER & APP BAR ── */
-.skinHeader {
-  background: var(--ux-bg) !important;
+input[type="checkbox"]:checked, input[type="radio"]:checked { accent-color: var(--ux-accent); }
+
+/* ════════════════════════════════════════════════════════════
+   JELLYFIN 12.0 MODERN LAYOUT — React/MUI top bar + nav drawer
+   Confirmed real selectors (not legacy guesses). These are
+   unscoped MUI classes, so they apply site-wide including the
+   dashboard's top bar — deliberately NOT touching the dashboard's
+   deeper inner cards, which use random per-build hash classes
+   Custom CSS can't reliably reach anyway (see chat notes).
+   ════════════════════════════════════════════════════════════ */
+.MuiAppBar-root.MuiAppBar-colorTransparent,
+.MuiAppBar-root.MuiAppBar-colorDefault,
+.MuiAppBar-root {
+  background-color: var(--ux-bg) !important;
+  background-image: none !important;
+  box-shadow: none !important;
   border-bottom: 1px solid var(--ux-line) !important;
 }
-.skinHeader-withBackground.semiTransparent {
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.95), transparent) !important;
-  border: none !important;
-}
-.headerTop { align-items: center; height: var(--ux-app-bar-height); padding: 0 2rem; }
-.headerUserButtonRound { border-radius: var(--ux-radius) !important; }
 
-.pageTitle {
-  font-size: 1rem !important;
+.MuiToolbar-root { flex-wrap: nowrap !important; }
+
+.MuiToolbar-root .MuiIconButton-root {
   color: var(--ux-text) !important;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  width: 40px !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  border-radius: var(--ux-radius) !important;
+  transition: color var(--ux-fast), background-color var(--ux-fast) !important;
+}
+.MuiToolbar-root .MuiIconButton-root svg,
+.MuiToolbar-root .MuiIconButton-root .material-icons { font-size: 22px !important; }
+.MuiToolbar-root .MuiIconButton-root:hover,
+.MuiToolbar-root .MuiIconButton-root:focus-visible {
+  color: var(--ux-accent) !important;
+  background-color: var(--ux-accent-dim) !important;
 }
 
-/* ── NAVIGATION TABS ── */
-.sectionTabs { margin-bottom: 0 !important; }
+.MuiToolbar-root [aria-controls="app-user-menu"] { border-radius: var(--ux-radius) !important; }
+
+/* Legacy icon buttons some plugins still inject into the new toolbar */
+.MuiToolbar-root .headerButton.paper-icon-button-light {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  color: var(--ux-text) !important;
+}
+.MuiToolbar-root .headerButton.paper-icon-button-light:hover { color: var(--ux-accent) !important; }
+
+/* Nav drawer — flat panel, sharp edges, no blur (Jellyfish uses
+   backdrop-filter: blur(30px) here; replaced with a flat solid
+   fill for the performance mandate) */
+body:not(.dashboardDocument) .MuiDrawer-paper.MuiDrawer-paper.MuiDrawer-paper {
+  background: var(--ux-bg) !important;
+  border-right: 1px solid var(--ux-line) !important;
+  border-radius: 0 !important;
+}
+
+body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root {
+  width: auto !important;
+  margin: 2px 8px !important;
+  border-radius: var(--ux-radius) !important;
+  color: var(--ux-text-dim) !important;
+  transition: color var(--ux-fast), background-color var(--ux-fast) !important;
+}
+body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root:hover:not(.Mui-selected) {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--ux-text) !important;
+}
+body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root.Mui-selected {
+  background: var(--ux-accent-dim) !important;
+  color: var(--ux-accent) !important;
+}
+body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemIcon-root,
+body:not(.dashboardDocument) .MuiDrawer-paper .MuiListItemButton-root.Mui-selected .MuiListItemIcon-root {
+  color: inherit !important;
+}
+
+/* ── NAV TABS (Home/Movies/Shows row + KefinTweaks Watchlist/Favourites) ── */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
-  margin: 0 1.2em 0 0;
-  padding: 0.6em 0;
+  margin: 0 1.4em 0 0;
+  padding: 0.5em 0;
+  height: auto;
+  border-radius: 0;
   background: transparent !important;
   color: var(--ux-text-dim);
-  font-weight: 600;
-  font-size: 0.8rem;
+  font-weight: 500;
+  font-size: 0.82em;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  border-bottom: 2px solid transparent;
+  letter-spacing: 1px;
+  border-bottom: 1px solid transparent;
   transition: color var(--ux-fast), border-color var(--ux-fast);
 }
 .sectionTabs .emby-tab-button-active {
   color: var(--ux-accent) !important;
-  border-bottom: 2px solid var(--ux-accent) !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--ux-accent) !important;
 }
 .sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) { color: var(--ux-text); }
-.emby-tabs-slider { background: transparent; }
+.emby-tabs-slider { background: transparent; padding: 0; }
 
-/* ── DRAWER NAVIGATION ── */
-.mainDrawer {
-  background-color: var(--ux-bg);
-  border-right: 1px solid var(--ux-line);
-}
-.navMenuOption {
-  border-radius: 0 !important;
-  padding: 0.8em 1.2em !important;
-  color: var(--ux-text-dim) !important;
-  font-size: 0.85rem;
-  border-left: 2px solid transparent;
-  transition: color var(--ux-fast), border-color var(--ux-fast);
-}
-.navMenuOption-selected {
-  background-color: var(--ux-surface) !important;
-  color: var(--ux-accent) !important;
-  border-left: 2px solid var(--ux-accent) !important;
-}
-.navMenuOption:hover:not(.navMenuOption-selected) {
-  color: var(--ux-text) !important;
-}
-
-/* ── CARDS (ZERO GPU TRANSFORM OVERHEAD) ── */
+/* ── CARDS ── */
 .cardScalable {
   border-radius: var(--ux-radius);
   border: 1px solid var(--ux-line) !important;
   overflow: hidden !important;
-  box-shadow: none !important;
+  box-shadow: none;
   transition: border-color var(--ux-fast);
 }
 .card-hoverable:hover .cardScalable { border-color: var(--ux-accent) !important; }
-.card-hoverable:hover .cardImageContainer { transform: none !important; } /* Prevent GPU raster repaint */
+.card-hoverable:hover .cardImageContainer { transform: none; }
 
 .cardBox, .card .cardBox { background-color: var(--ux-surface) !important; }
-.cardText { color: var(--ux-text-dim) !important; font-size: 0.85rem; }
-.cardText-first { color: var(--ux-text) !important; font-weight: 600; font-size: 0.9rem; }
-.cardText-secondary { color: var(--ux-text-dimmer) !important; font-size: 0.75rem; }
+.cardText { color: var(--ux-text-dim) !important; font-weight: 400; font-size: 0.85em; }
+.cardText-first { color: var(--ux-text) !important; font-weight: 600; font-size: 0.9em; }
+.cardText-secondary { color: var(--ux-text-dimmer) !important; font-size: 0.78em; }
 
 .card:focus .cardBox.visualCardBox,
-.card:focus .cardBox:not(.visualCardBox) .cardScalable {
-  border: 1px solid var(--ux-accent) !important;
+.card:focus .cardBox:not(.visualCardBox) .cardScalable { border: 1px solid var(--ux-accent) !important; }
+
+.innerCardFooter, .chapterThumbTextContainer {
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+  text-shadow: none;
 }
 
 .cardOverlayContainer { background: transparent; }
-.card-hoverable:hover .cardOverlayContainer { background: rgba(255, 255, 255, 0.02); }
+.card-hoverable:hover .cardOverlayContainer { background: rgba(255, 255, 255, 0.03); }
 
-/* Play buttons on cards */
 .cardOverlayContainer > .cardOverlayFab-primary,
-.listItemImageButton {
-  background-color: rgba(5, 5, 5, 0.9) !important;
+.listItemImageButton,
+.layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
+  background-color: rgba(10, 10, 10, 0.9) !important;
   color: var(--ux-text) !important;
   border: 1px solid var(--ux-line-bright) !important;
   border-radius: var(--ux-radius) !important;
@@ -163,22 +199,39 @@ body {
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
 .listItemImageButton:hover {
   background-color: var(--ux-accent) !important;
-  color: var(--ux-accent-text) !important;
+  color: #000 !important;
   border-color: var(--ux-accent) !important;
 }
 
-/* ── PROGRESS BARS & STATUS ── */
-.itemProgressBar { background: rgba(255, 255, 255, 0.1) !important; height: 2px !important; }
-.itemProgressBarForeground, .playbackProgress > div { background-color: var(--ux-active) !important; }
-.playedIndicator { background: var(--ux-active) !important; border-radius: var(--ux-radius) !important; }
+.layout-desktop .cardOverlayButton-br button {
+  background: rgba(10, 10, 10, 0.8) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  color: var(--ux-text) !important;
+}
+.layout-desktop .cardOverlayButton-br button:hover { border-color: var(--ux-accent) !important; }
 
+/* ── PROGRESS / INDICATORS ── */
+.itemProgressBar { background: rgba(255, 255, 255, 0.12) !important; border-radius: 0; height: 2px !important; }
+.itemProgressBarForeground, .playbackProgress > div { background-color: var(--ux-accent-2) !important; border-radius: 0; }
 .countIndicator {
   background: var(--ux-bg);
   border: 1px solid var(--ux-line-bright);
   color: var(--ux-text) !important;
   border-radius: var(--ux-radius) !important;
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
+.playedIndicator { background: var(--ux-accent-2); border-radius: var(--ux-radius) !important; }
+.mediaSourceIndicator { background: var(--ux-bg); border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
+.progressring-spiner { border-color: var(--ux-accent) !important; }
+
+.mdl-slider-background-lower, .mdl-slider::-webkit-slider-thumb, .mdl-slider::-moz-range-thumb {
+  background-color: var(--ux-accent) !important;
+}
+.sliderMarker.watched { background-color: var(--ux-accent-2) !important; }
+.iconOsdProgressInner { background: var(--ux-accent) !important; }
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track { background: var(--ux-accent-dim); }
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb { background: var(--ux-accent); }
 
 /* ── BUTTONS ── */
 .raised, .fab, a[data-role="button"] {
@@ -186,41 +239,61 @@ body {
   color: var(--ux-text);
   border: 1px solid var(--ux-line-bright) !important;
   border-radius: var(--ux-radius);
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  font-size: 0.8rem;
-  transition: border-color var(--ux-fast), color var(--ux-fast);
+  letter-spacing: 0.6px;
+  font-size: 0.85em;
+  transition: border-color var(--ux-fast), color var(--ux-fast), background var(--ux-fast);
 }
 .raised:hover, .fab:hover, a[data-role="button"]:hover {
   border-color: var(--ux-accent) !important;
   color: var(--ux-accent) !important;
 }
+.raised:active, .fab:active, .emby-button:active { filter: brightness(1.15) !important; }
 
 .button-submit, .raised.button-submit {
   background: var(--ux-accent) !important;
-  color: var(--ux-accent-text) !important;
+  color: #000 !important;
   border: 1px solid var(--ux-accent) !important;
   font-weight: 700;
 }
 .button-submit:hover { background: rgba(255,255,255,0.85) !important; }
 
+#btnDeleteImage, .button-delete, .btnRevoke, #btnShutdown {
+  background: transparent !important;
+  border: 1px solid rgb(239, 68, 68) !important;
+  color: rgb(239, 68, 68) !important;
+}
+.button-flat:hover, .button-link:hover { color: var(--ux-accent) !important; }
+
 .btnPlay.detailButton, #itemDetailPage .btnPlay {
   background-color: var(--ux-accent) !important;
-  color: var(--ux-accent-text) !important;
+  color: #000 !important;
   border-radius: var(--ux-radius);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .btnPlay.detailButton:hover, #itemDetailPage .btnPlay:hover { background-color: rgba(255,255,255,0.85) !important; }
+.btnPlay.play-button::before { content: none !important; }
 
-/* ── DIALOGS & OVERLAYS ── */
-.dialog, .toast, .upNextContainer, .playerStats-stats, .actionSheetContent {
-  background-color: var(--ux-panel) !important;
-  border-radius: var(--ux-radius) !important;
-  border: 1px solid var(--ux-line-bright) !important;
+.detailButton:not(.btnPlay) {
+  background: transparent !important;
+  border: 1px solid var(--ux-line-bright);
+  border-radius: var(--ux-radius);
 }
+.detailButton:not(.btnPlay):hover { border-color: var(--ux-accent); color: var(--ux-accent) !important; }
+
+/* ── DIALOGS — flat panel, NO blur ── */
+.dialog, .toast, .upNextContainer, .playerStats-stats, .actionSheetContent, .manualLoginForm,
+.MuiPaper-root.MuiPopover-paper, .MuiMenu-paper {
+  background-color: var(--ux-panel) !important;
+  border-radius: var(--ux-radius-lg) !important;
+  border: 1px solid var(--ux-line) !important;
+}
+.upNextContainer .btnStartNow { background-color: var(--ux-accent) !important; color: #000 !important; }
+.upNextDialog-countdownText { color: var(--ux-accent) !important; }
+.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--ux-accent-dim); color: var(--ux-accent); }
 
 /* ── DETAIL PAGE ── */
 .detailPagePrimaryContainer, .detailPageWrapperContainer { background-color: var(--ux-bg) !important; }
@@ -229,24 +302,27 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 30%, var(--ux-bg) 100%);
+  background: linear-gradient(180deg, transparent 40%, var(--ux-bg) 100%);
 }
-.detailImageContainer .cardImageContainer {
+.detailImageContainer .cardImageContainer, .detailImageContainer .card {
   border-radius: var(--ux-radius) !important;
-  border: 1px solid var(--ux-line-bright);
+  border: 1px solid var(--ux-line);
 }
+.subtitle { color: var(--ux-text-dim); font-weight: 400; }
+.starIcon { color: var(--ux-accent) !important; }
 .mediaInfoOfficialRating {
   border: 1px solid var(--ux-line-bright) !important;
   color: var(--ux-text) !important;
   background: transparent !important;
   border-radius: var(--ux-radius);
-  font-size: 0.75rem;
+  font-size: 0.8em;
 }
+.itemMiscInfo-primary .mediaInfoItem { color: var(--ux-text-dim); }
 
 /* ── MEDIA PLAYER / OSD ── */
 .nowPlayingBar, .videoOsdBottom .osdControls {
   background-color: var(--ux-panel) !important;
-  border-radius: var(--ux-radius);
+  border-radius: var(--ux-radius-lg);
   border: 1px solid var(--ux-line);
 }
 .skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
@@ -257,59 +333,174 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   border-radius: var(--ux-radius);
-  font-size: 0.75rem;
+  font-size: 0.8em;
 }
-.skip-button:hover, #introSkipperButton:hover { background-color: var(--ux-accent); color: var(--ux-accent-text); }
+.skip-button:hover, #introSkipperButton:hover { background-color: var(--ux-accent); color: #000; }
 
-/* ── MEDIA BAR ENHANCED PLUG-IN COMPATIBILITY ── */
-#slides-container { font-family: var(--ux-body-font) !important; }
-#slides-container .detailButton.btnPlay,
-#slides-container .btnPlay {
+/* ── LOGIN PAGE ── */
+#loginPage { background: var(--ux-bg) !important; }
+#loginPage .padded-left.padded-right.padded-bottom-page {
+  background: var(--ux-surface);
+  border-radius: var(--ux-radius-lg);
+  border: 1px solid var(--ux-line);
+  padding: 3em 3em 1.5em !important;
+}
+#loginPage h1 { display: none; }
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button { background: transparent !important; border: none !important; color: var(--ux-text-dim) !important; }
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--ux-accent) !important; }
+.manualLoginForm::before {
+  content: "USHER'S THEME";
+  display: block;
+  text-align: center;
+  font-family: var(--ux-heading-font);
+  color: var(--ux-accent);
+  font-size: 1.3em;
+  letter-spacing: 3px;
+  margin-bottom: 1.2em;
+  text-transform: uppercase;
+}
+
+/* ── FORM INPUTS ── */
+.emby-input, .emby-textarea, .emby-select-withcolor, .checkboxOutline {
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  background-color: transparent !important;
+  color: var(--ux-text) !important;
+}
+.emby-input:focus, .emby-textarea:focus, .emby-select-withcolor:focus, .checkboxOutline:focus { border-color: var(--ux-accent) !important; }
+input[type="checkbox"]:checked ~ .checkboxOutline, input[type="checkbox"]:checked + .checkboxOutline {
   background: var(--ux-accent) !important;
-  color: var(--ux-accent-text) !important;
+  border-color: var(--ux-accent) !important;
+}
+
+/* ── SETTINGS / DISPLAY PREFERENCES (user-facing, not blocked admin dashboard) ── */
+.settingsPage, .userSettingsPage, .displayPreferencesPage, #myPreferencesMenuPage { background-color: var(--ux-bg) !important; }
+.paperList { background-color: var(--ux-surface) !important; border: 1px solid var(--ux-line) !important; border-radius: var(--ux-radius) !important; }
+.settingsPage h2, .userSettingsPage h2 { font-family: var(--ux-heading-font); font-weight: 700; }
+.listItem { border-radius: 0 !important; }
+.listItem:hover { background: rgba(255, 255, 255, 0.03) !important; }
+table:not(.MuiTable-root.MuiTable-stickyHeader) { border: 1px solid var(--ux-line) !important; border-radius: var(--ux-radius); background: var(--ux-surface); }
+.detailTableBodyRow-shaded:nth-child(odd) { background: rgba(255, 255, 255, 0.015) !important; }
+.detailTableBodyRow-shaded:nth-child(even) { background: transparent !important; }
+.Mui-selected { background-color: var(--ux-accent-dim) !important; color: var(--ux-accent) !important; }
+
+/* ── SEARCH PAGE ── */
+#searchTextInput { background: var(--ux-surface) !important; border: 1px solid var(--ux-line-bright) !important; border-radius: var(--ux-radius) !important; color: var(--ux-text) !important; }
+.searchSuggestionsList .emby-button { color: var(--ux-text-dim); }
+.searchSuggestionsList .emby-button:hover { color: var(--ux-accent); }
+
+/* ── TV GUIDE ── */
+.guideProgramName { background-color: transparent; border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
+.programCell-active .guideProgramName { border-color: var(--ux-accent); background: var(--ux-accent-dim); }
+.guide-channelHeaderCell { background-color: var(--ux-surface); border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
+
+/* ── HOME LIBRARY BUTTONS / SECTION TITLES ── */
+.homeLibraryButton { border-radius: var(--ux-radius) !important; }
+.raised.homeLibraryButton { background: transparent !important; border: 1px solid var(--ux-line-bright) !important; }
+.raised.homeLibraryButton:hover { border-color: var(--ux-accent) !important; color: var(--ux-accent) !important; }
+
+.sectionTitle { color: var(--ux-text) !important; font-weight: 700; font-size: 1.05em; text-transform: uppercase; letter-spacing: 1.5px; }
+
+.emby-scrollbuttons-button.paper-icon-button-light {
+  background: var(--ux-bg) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  opacity: 0;
+  transition: opacity var(--ux-fast);
+}
+.emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light { opacity: 1; }
+
+/* ════════════════════════════════════════════════════════════
+   MEDIA BAR ENHANCED (#slides-container)
+   ════════════════════════════════════════════════════════════ */
+#slides-container { font-family: var(--ux-body-font) !important; }
+#slides-container .detailButton, #slides-container .misc-info,
+#slides-container .misc-info *:not(.material-icons), #slides-container .plot,
+#slides-container .genre, #slides-container .play-text, #slides-container .trailer-text {
+  font-family: var(--ux-body-font) !important;
+}
+#slides-container .detailButton.btnPlay, #slides-container .btnPlay {
+  background: var(--ux-accent) !important;
+  color: #000 !important;
   border: 1px solid var(--ux-accent) !important;
   border-radius: var(--ux-radius) !important;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
+#slides-container .detailButton.btnPlay:hover, #slides-container .btnPlay:hover { background: rgba(255,255,255,0.85) !important; }
+#slides-container .btnPlay.play-button::before { content: none !important; }
 
-/* Strip duplicate Material Icons text bleeding in Media Bar */
-#slides-container .btnPlay .material-icons,
-#slides-container .btnPlay .material-icons-round,
-#slides-container .btnPlay.play-button::before {
-  display: none !important;
-}
-
-/* Hide duplicate home library buttons bleeding over banner */
-.homePage .homeLibraryButtons,
-#slides-container + .sections .homeLibraryButtons {
-  display: none !important;
-}
-
-#slides-container .favorite-button, 
-#slides-container .detail-button, 
-#slides-container .watchlist-button {
-  background: rgba(5, 5, 5, 0.9) !important;
+#slides-container .favorite-button, #slides-container .detail-button, #slides-container .watchlist-button {
+  background: rgba(10, 10, 10, 0.9) !important;
   border: 1px solid var(--ux-line-bright) !important;
   border-radius: var(--ux-radius) !important;
   color: var(--ux-text) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   padding: 8px !important;
 }
-
-#slides-container #slide-counter {
-  background: var(--ux-bg) !important;
-  border: 1px solid var(--ux-accent) !important;
+#slides-container .favorite-button:hover, #slides-container .detail-button:hover, #slides-container .watchlist-button:hover {
+  border-color: var(--ux-accent) !important;
   color: var(--ux-accent) !important;
-  border-radius: var(--ux-radius) !important;
 }
 
-/* Touch Target Optimization */
-.headerButton, .headerUserButton, .headerCastButton {
-  box-sizing: border-box !important;
+#slides-container #slide-counter, #slides-container .star-rating-container,
+#slides-container .critic-rating, #slides-container .age-rating,
+#slides-container .runTime, #slides-container .date {
+  background: var(--ux-bg) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--ux-text-dim) !important;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+#slides-container #slide-counter { color: var(--ux-accent) !important; border-color: var(--ux-accent) !important; }
+#slides-container .separator-icon { color: var(--ux-text-dimmer) !important; }
+#slides-container .plot { color: var(--ux-text-dim) !important; }
+#slides-container .genre { color: var(--ux-text) !important; text-transform: uppercase; letter-spacing: 1.2px; font-size: 0.8em; opacity: 0.7; }
+#slides-container .favorite-button.favorited { color: var(--ux-accent) !important; border-color: var(--ux-accent) !important; }
+
+/* ════════════════════════════════════════════════════════════
+   KEFINTWEAKS — Watchlist + home sections
+   ════════════════════════════════════════════════════════════ */
+.sections.watchlist .watchlist-tabs button {
+  color: var(--ux-text-dim) !important;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+}
+.sections.watchlist .watchlist-tabs button.active { color: var(--ux-accent) !important; border-bottom-color: var(--ux-accent) !important; background: transparent !important; }
+.sections.watchlist .watchlist-tabs button:hover { color: var(--ux-text) !important; background: rgba(255,255,255,0.03) !important; }
+
+.progress-card, .movie-card, .stat-card, .top-shows-container {
+  background: var(--ux-surface) !important;
+  border: 1px solid var(--ux-line) !important;
+  border-radius: var(--ux-radius) !important;
+  backdrop-filter: none !important;
+}
+.progress-card:hover, .movie-card:hover { background: var(--ux-surface-2) !important; border-color: var(--ux-line-bright) !important; }
+.progress-bar-fill, .progress-chunk.watched { background: var(--ux-accent-2) !important; }
+.progress-percentage, .action-link, .view-episode-btn { color: var(--ux-accent) !important; }
+.watchlist-button[data-active="true"], .watchlist-icon[data-active="true"] { color: var(--ux-accent-2) !important; }
+.pagination-btn.active { background: var(--ux-accent) !important; border-color: var(--ux-accent) !important; color: #000 !important; }
+
+/* ── MOBILE TOUCH TARGETS ── */
+.headerButton, .headerButton.headerButtonLeft, .headerButton.headerButtonRight,
+.headerUserButton, .headerCastButton, .headerSyncButton {
   width: 36px !important;
   height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+}
+.headerButton .material-icons, .headerButton .material-icons-round { font-size: 26px !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
