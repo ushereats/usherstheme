@@ -5,10 +5,24 @@
    (headings only), no hover transforms.
    ============================================================ */
 
-/* Only weight 700 is actually used anywhere below — 600/700/800 was
-   downloading two unused weight files for nothing. This cuts the font
-   fetch to roughly a third of its previous size. */
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@700&display=swap");
+/* Self-hosted instead of Google Fonts — cuts two third-party domains
+   (fonts.googleapis.com + fonts.gstatic.com) and their DNS/TLS handshakes
+   out of every page load entirely, since this now comes from the same
+   jsDelivr/GitHub source as theme.css itself.
+
+   font-display: optional (not swap): the browser uses the system font
+   immediately with zero wait, and only swaps in Sora if it is already
+   cached from a previous visit. No visible font-flash, ever — the
+   tradeoff is Sora may simply not appear on someone's very first visit
+   before it is cached, falling back to the system font permanently for
+   that load instead of waiting for it. */
+@font-face {
+  font-family: "Sora";
+  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/Sora-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: optional;
+}
 
 :root {
   color-scheme: dark;
