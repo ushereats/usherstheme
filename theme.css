@@ -5,6 +5,38 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
+@font-face {
+  font-family: "Netflix Sans";
+  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Netflix Sans";
+  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Netflix Sans";
+  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Netflix Sans";
+  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
 
