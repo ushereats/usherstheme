@@ -37,7 +37,7 @@
   --ux-accent-dim: rgba(255, 255, 255, 0.12);
   --ux-accent-2: #22c55e;
 
-  --ux-bg: #0a0a0a;
+  --ux-bg: #000000; /* true OLED black — every dark background in this theme references this one variable */
   --ux-surface: #141414;
   --ux-surface-2: #1c1c1c;
   --ux-panel: rgba(18, 18, 18, 0.97); /* flat, no blur */
