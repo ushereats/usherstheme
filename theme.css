@@ -1,23 +1,17 @@
 /* ============================================================
-   USHER'S THEME v3 — Performance Rebuild
+   USHER'S THEME v3.1 — Performance Rebuild (Fixed)
    Jellyfin 12.0 + Media Bar Enhanced + KefinTweaks
    Full coverage: home, cards, detail, player, login, dashboard,
    settings, search, TV guide, watchlist.
 
    PERFORMANCE PRINCIPLES APPLIED:
-   - Zero backdrop-filter/blur anywhere (GPU-expensive, biggest
-     single perf cost in most Jellyfin themes). Flat translucent
-     panels instead — visually close, near-zero render cost.
-   - One web font, headings only (Sora). Everything else uses the
-     OS system font stack — zero network cost for 95% of the text
-     on screen.
-   - No hover scale/transform animations (forces repaint/composite
-     on every hover). Color/border transitions only.
-   - Sharp corners throughout — cheaper to rasterize than large
-     border-radius + shadow combos.
-   - No gradients on frequently-repainted elements (progress bars,
-     scroll areas). Gradients kept only on static one-time paints
-     (backdrop fade on detail page).
+   - Zero backdrop-filter/blur anywhere (GPU-expensive). Flat
+     translucent panels instead.
+   - One web font, headings only (Sora). Everything else uses system
+     font stack.
+   - No hover scale/transform animations. Color/border transitions only.
+   - Sharp corners throughout — cheaper to rasterize.
+   - No gradients on frequently-repainted elements.
    ============================================================ */
 
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap");
@@ -26,6 +20,7 @@
   color-scheme: dark;
 
   --ux-accent: #ffffff;
+  --ux-accent-text: #000000;
   --ux-accent-dim: rgba(255, 255, 255, 0.12);
   --ux-accent-2: #22c55e; /* secondary accent: success/progress/active states */
 
@@ -66,8 +61,8 @@ body { background-color: var(--ux-bg) !important; overscroll-behavior: none; }
   letter-spacing: 0.01em;
 }
 
-::selection { background: var(--ux-accent-dim); color: #fff; }
-::-moz-selection { background: var(--ux-accent-dim); color: #fff; }
+::selection { background: rgba(255, 255, 255, 0.3); color: #ffffff; }
+::-moz-selection { background: rgba(255, 255, 255, 0.3); color: #ffffff; }
 :focus-visible { outline: 1px solid var(--ux-accent) !important; outline-offset: 2px; }
 
 /* Thin scrollbars, no styling complexity */
@@ -91,7 +86,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 .headerTop { align-items: center; height: var(--ux-app-bar-height); padding: 0 3%; }
 .headerUserButtonRound { border-radius: var(--ux-radius) !important; }
 
-.headroom { transition: transform 0.2s var(--ux-fast); }
+.headroom { transition: transform var(--ux-fast); }
 .headroom--unpinned { transform: translateY(calc(-1 * var(--ux-app-bar-height))); }
 
 .pageTitle {
@@ -101,7 +96,8 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
   letter-spacing: 1.5px;
 }
 
-/* ── NAV TABS (stock + KefinTweaks-injected Watchlist/Favourites) ── */
+/* ── NAV TABS ── */
+.sectionTabs { margin-bottom: 0 !important; }
 .sectionTabs .emby-tab-button {
   display: inline-flex;
   margin: 0 1.4em 0 0;
@@ -207,7 +203,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
 .listItemImageButton:hover {
   background-color: var(--ux-accent) !important;
-  color: #000 !important;
+  color: var(--ux-accent-text) !important;
   border-color: var(--ux-accent) !important;
 }
 
@@ -219,7 +215,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 }
 .layout-desktop .cardOverlayButton-br button:hover { border-color: var(--ux-accent) !important; }
 
-/* ── PROGRESS / INDICATORS — flat, no gradient repaint cost ── */
+/* ── PROGRESS / INDICATORS ── */
 .itemProgressBar { background: rgba(255, 255, 255, 0.12) !important; border-radius: 0; height: 2px !important; }
 .itemProgressBarForeground, .playbackProgress > div { background-color: var(--ux-accent-2) !important; border-radius: 0; }
 .countIndicator {
@@ -261,7 +257,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 
 .button-submit, .raised.button-submit {
   background: var(--ux-accent) !important;
-  color: #000 !important;
+  color: var(--ux-accent-text) !important;
   border: 1px solid var(--ux-accent) !important;
   font-weight: 700;
 }
@@ -276,7 +272,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 
 .btnPlay.detailButton, #itemDetailPage .btnPlay {
   background-color: var(--ux-accent) !important;
-  color: #000 !important;
+  color: var(--ux-accent-text) !important;
   border-radius: var(--ux-radius);
   font-weight: 700;
   text-transform: uppercase;
@@ -292,13 +288,13 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
 }
 .detailButton:not(.btnPlay):hover { border-color: var(--ux-accent); color: var(--ux-accent) !important; }
 
-/* ── DIALOGS — flat panel, NO blur ── */
+/* ── DIALOGS ── */
 .dialog, .toast, .upNextContainer, .playerStats-stats, .actionSheetContent, .manualLoginForm {
   background-color: var(--ux-panel) !important;
   border-radius: var(--ux-radius-lg) !important;
   border: 1px solid var(--ux-line) !important;
 }
-.upNextContainer .btnStartNow { background-color: var(--ux-accent) !important; color: #000 !important; }
+.upNextContainer .btnStartNow { background-color: var(--ux-accent) !important; color: var(--ux-accent-text) !important; }
 .upNextDialog-countdownText { color: var(--ux-accent) !important; }
 .actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--ux-accent-dim); color: var(--ux-accent); }
 
@@ -342,7 +338,7 @@ input[type="radio"]:checked { accent-color: var(--ux-accent); }
   border-radius: var(--ux-radius);
   font-size: 0.8em;
 }
-.skip-button:hover, #introSkipperButton:hover { background-color: var(--ux-accent); color: #000; }
+.skip-button:hover, #introSkipperButton:hover { background-color: var(--ux-accent); color: var(--ux-accent-text); }
 
 /* ── LOGIN PAGE ── */
 #loginPage { background: var(--ux-bg) !important; }
@@ -386,7 +382,7 @@ input[type="checkbox"]:checked ~ .checkboxOutline, input[type="checkbox"]:checke
   border-color: var(--ux-accent) !important;
 }
 
-/* ── DASHBOARD / SETTINGS / ADMIN — previously untouched ── */
+/* ── DASHBOARD / SETTINGS ── */
 .dashboardDocument, .settingsPage, .adminPage, .userSettingsPage, .displayPreferencesPage,
 #myPreferencesMenuPage {
   background-color: var(--ux-bg) !important;
@@ -433,6 +429,12 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
 .raised.homeLibraryButton { background: transparent !important; border: 1px solid var(--ux-line-bright) !important; }
 .raised.homeLibraryButton:hover { border-color: var(--ux-accent) !important; color: var(--ux-accent) !important; }
 
+/* Hide redundant library buttons floating over hero banner */
+.homePage .homeLibraryButtons,
+#slides-container + .sections .homeLibraryButtons {
+  display: none !important;
+}
+
 .sectionTitle {
   color: var(--ux-text) !important;
   font-weight: 700;
@@ -460,19 +462,28 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
   font-family: var(--ux-body-font) !important;
 }
 
-#slides-container .detailButton.btnPlay, #slides-container .btnPlay {
+/* Cleanup Play button icon & duplicate text stacking */
+#slides-container .detailButton.btnPlay,
+#slides-container .btnPlay {
   background: var(--ux-accent) !important;
-  color: #000 !important;
+  color: var(--ux-accent-text) !important;
   border: 1px solid var(--ux-accent) !important;
   border-radius: var(--ux-radius) !important;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 #slides-container .detailButton.btnPlay:hover, #slides-container .btnPlay:hover {
   background: rgba(255,255,255,0.85) !important;
 }
-#slides-container .btnPlay.play-button::before { content: none !important; }
+#slides-container .btnPlay.play-button::before,
+#slides-container .btnPlay .material-icons,
+#slides-container .btnPlay .material-icons-round {
+  display: none !important;
+}
 
 #slides-container .favorite-button, #slides-container .detail-button, #slides-container .watchlist-button {
   background: rgba(10, 10, 10, 0.9) !important;
@@ -540,11 +551,12 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
 .progress-bar-fill, .progress-chunk.watched { background: var(--ux-accent-2) !important; }
 .progress-percentage, .action-link, .view-episode-btn { color: var(--ux-accent) !important; }
 .watchlist-button[data-active="true"], .watchlist-icon[data-active="true"] { color: var(--ux-accent-2) !important; }
-.pagination-btn.active { background: var(--ux-accent) !important; border-color: var(--ux-accent) !important; color: #000 !important; }
+.pagination-btn.active { background: var(--ux-accent) !important; border-color: var(--ux-accent) !important; color: var(--ux-accent-text) !important; }
 
 /* ── MOBILE TOUCH TARGETS ── */
 .headerButton, .headerButton.headerButtonLeft, .headerButton.headerButtonRight,
 .headerUserButton, .headerCastButton, .headerSyncButton {
+  box-sizing: border-box !important;
   width: 36px !important;
   height: 36px !important;
   min-width: 36px !important;
