@@ -1,6 +1,6 @@
 /* ============================================================
    USHER'S THEME — Futurist Minimal
-   Jellyfin 12.0 only
+   Jellyfin 12.0 + Media Bar Enhanced + KefinTweaks compatible
    ============================================================ */
 
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
@@ -82,6 +82,9 @@ input[type="radio"]:checked { accent-color: var(--fx-accent); }
 }
 
 /* ── NAV TABS — underline hairline, monospace index feel ── */
+/* Covers stock tabs AND KefinTweaks-injected extra tabs (Watchlist,
+   Favourites, custom ones) — they render through the same .emby-tab-button
+   markup as stock Home/Movies/Shows, so no separate selector needed. */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
   margin: 0 1.6em 0 0;
@@ -549,6 +552,172 @@ table:not(.MuiTable-root.MuiTable-stickyHeader) {
   transition: opacity 0.2s;
 }
 .emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light { opacity: 1; }
+
+/* ════════════════════════════════════════════════════════════
+   MEDIA BAR ENHANCED — real classes confirmed from that plugin's
+   own DOM (#slides-container, .detailButton, .misc-info, .plot,
+   .genre, .favorite-button, .detail-button, #slide-counter,
+   .star-rating-container, .critic-rating, .age-rating, .runTime,
+   .date, .separator-icon, .arrow). Restyled to match the sharp/
+   hairline futurist look instead of leaving it unstyled or
+   fighting the plugin's own defaults.
+   ════════════════════════════════════════════════════════════ */
+#slides-container {
+  font-family: var(--fx-sans) !important;
+}
+
+#slides-container .detailButton,
+#slides-container .misc-info,
+#slides-container .misc-info *:not(.material-icons),
+#slides-container .plot,
+#slides-container .genre,
+#slides-container .play-text,
+#slides-container .trailer-text {
+  font-family: var(--fx-sans) !important;
+}
+
+/* Primary Play button — sharp, outline, accent, matches card play button */
+#slides-container .detailButton.btnPlay,
+#slides-container .btnPlay {
+  background: var(--fx-accent) !important;
+  color: #000 !important;
+  border: 1px solid var(--fx-accent) !important;
+  border-radius: var(--fx-radius) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+#slides-container .detailButton.btnPlay:hover,
+#slides-container .btnPlay:hover {
+  background: var(--fx-accent-bright) !important;
+}
+
+/* Secondary buttons (favorite/bookmark/detail) — flat outline, no blur */
+#slides-container .favorite-button,
+#slides-container .detail-button,
+#slides-container .watchlist-button {
+  background: rgba(5, 5, 5, 0.85) !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius) !important;
+  color: var(--fx-text) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 8px !important;
+}
+#slides-container .favorite-button:hover,
+#slides-container .detail-button:hover,
+#slides-container .watchlist-button:hover {
+  border-color: var(--fx-accent) !important;
+  color: var(--fx-accent) !important;
+}
+
+/* Info chips (episode counter, rating, age, runtime, date) — hairline
+   outline instead of the plugin's default blurred pill */
+#slides-container #slide-counter,
+#slides-container .star-rating-container,
+#slides-container .critic-rating,
+#slides-container .age-rating,
+#slides-container .runTime,
+#slides-container .date {
+  background: var(--fx-bg) !important;
+  border: 1px solid var(--fx-line-bright) !important;
+  border-radius: var(--fx-radius) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--fx-text-dim) !important;
+  font-family: var(--fx-mono) !important;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+#slides-container #slide-counter {
+  border-radius: var(--fx-radius) !important;
+  color: var(--fx-accent) !important;
+  border-color: var(--fx-accent) !important;
+}
+
+#slides-container .separator-icon {
+  color: var(--fx-text-dimmer) !important;
+}
+
+#slides-container .plot {
+  color: var(--fx-text-dim) !important;
+  font-weight: 400;
+}
+
+#slides-container .genre {
+  color: var(--fx-text) !important;
+  font-family: var(--fx-mono) !important;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+#slides-container .favorite-button.favorited {
+  color: var(--fx-accent) !important;
+  border-color: var(--fx-accent) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   KEFINTWEAKS — Watchlist page + injected home sections. These
+   use plain custom class names (not stock Jellyfin ones), so
+   they need their own rules rather than inheriting from the
+   sections above.
+   ════════════════════════════════════════════════════════════ */
+.sections.watchlist .watchlist-tabs button {
+  font-family: var(--fx-sans) !important;
+  color: var(--fx-text-dim) !important;
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8em;
+}
+.sections.watchlist .watchlist-tabs button.active {
+  color: var(--fx-accent) !important;
+  border-bottom-color: var(--fx-accent) !important;
+  background: transparent !important;
+}
+.sections.watchlist .watchlist-tabs button:hover {
+  color: var(--fx-text) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.progress-card,
+.movie-card,
+.stat-card,
+.top-shows-container {
+  background: var(--fx-surface) !important;
+  border: 1px solid var(--fx-line) !important;
+  border-radius: var(--fx-radius) !important;
+  backdrop-filter: none !important;
+}
+.progress-card:hover,
+.movie-card:hover {
+  background: var(--fx-surface-2) !important;
+  border-color: var(--fx-line-bright) !important;
+}
+
+.progress-bar-fill,
+.progress-chunk.watched {
+  background: var(--fx-accent) !important;
+}
+.progress-percentage,
+.action-link,
+.view-episode-btn {
+  color: var(--fx-accent) !important;
+}
+
+.watchlist-button[data-active="true"],
+.watchlist-icon[data-active="true"] {
+  color: var(--fx-accent) !important;
+}
+
+.pagination-btn.active {
+  background: var(--fx-accent) !important;
+  border-color: var(--fx-accent) !important;
+  color: #000 !important;
+}
 
 /* ── RESPONSIVE / LAYOUT HOOKS ── */
 .layout-mobile .detailPagePrimaryContainer { background: transparent; }
