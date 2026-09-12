@@ -1,791 +1,560 @@
 /* ============================================================
-   USHER'S THEME — Futurist Minimal
-   Jellyfin 12.0 + Media Bar Enhanced + KefinTweaks compatible
+   USHER'S THEME v3 — Performance Rebuild
+   Jellyfin 12.0 + Media Bar Enhanced + KefinTweaks
+   Full coverage: home, cards, detail, player, login, dashboard,
+   settings, search, TV guide, watchlist.
+
+   PERFORMANCE PRINCIPLES APPLIED:
+   - Zero backdrop-filter/blur anywhere (GPU-expensive, biggest
+     single perf cost in most Jellyfin themes). Flat translucent
+     panels instead — visually close, near-zero render cost.
+   - One web font, headings only (Sora). Everything else uses the
+     OS system font stack — zero network cost for 95% of the text
+     on screen.
+   - No hover scale/transform animations (forces repaint/composite
+     on every hover). Color/border transitions only.
+   - Sharp corners throughout — cheaper to rasterize than large
+     border-radius + shadow combos.
+   - No gradients on frequently-repainted elements (progress bars,
+     scroll areas). Gradients kept only on static one-time paints
+     (backdrop fade on detail page).
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
-
-@font-face {
-  font-family: "Netflix Sans";
-  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Netflix Sans";
-  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Netflix Sans";
-  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Netflix Sans";
-  src: url("https://cdn.jsdelivr.net/gh/ushereats/usherstheme@main/fonts/NetflixSans-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap");
 
 :root {
   color-scheme: dark;
 
-  --fx-accent: rgb(0, 229, 255);
-  --fx-accent-dim: rgba(0, 229, 255, 0.14);
-  --fx-accent-bright: rgb(80, 245, 255);
+  --ux-accent: #ffffff;
+  --ux-accent-dim: rgba(255, 255, 255, 0.12);
+  --ux-accent-2: #22c55e; /* secondary accent: success/progress/active states */
 
-  --fx-bg: #050505;
-  --fx-surface: rgb(13, 13, 13);
-  --fx-surface-2: rgb(20, 20, 20);
-  --fx-glass: rgba(8, 8, 8, 0.92);
+  --ux-bg: #0a0a0a;
+  --ux-surface: #141414;
+  --ux-surface-2: #1c1c1c;
+  --ux-panel: rgba(18, 18, 18, 0.96); /* flat, no blur */
 
-  --fx-line: rgba(255, 255, 255, 0.09);
-  --fx-line-bright: rgba(255, 255, 255, 0.18);
+  --ux-line: rgba(255, 255, 255, 0.08);
+  --ux-line-bright: rgba(255, 255, 255, 0.16);
 
-  --fx-text: #f2f2f2;
-  --fx-text-dim: rgb(150, 150, 150);
-  --fx-text-dimmer: rgb(90, 90, 90);
+  --ux-text: #f5f5f5;
+  --ux-text-dim: rgb(158, 158, 158);
+  --ux-text-dimmer: rgb(100, 100, 100);
 
-  --fx-radius: 2px;
-  --fx-radius-lg: 3px;
+  --ux-radius: 2px;
+  --ux-radius-lg: 3px;
 
-  --fx-mono: "JetBrains Mono", monospace;
-  --fx-sans: "Netflix Sans", "Inter", sans-serif;
+  --ux-heading-font: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ux-body-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --fx-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --fx-app-bar-height: 4em;
+  --ux-fast: 0.12s ease;
+  --ux-app-bar-height: 4em;
 }
 
 /* ── BASE ── */
-html { font-family: var(--fx-sans); -webkit-font-smoothing: antialiased; font-weight: 400; }
-body { background-color: var(--fx-bg) !important; overscroll-behavior: none; }
+html {
+  font-family: var(--ux-body-font);
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+}
+body { background-color: var(--ux-bg) !important; overscroll-behavior: none; }
 
-.pageTitle, .sectionTitle, h1, h2, h3 {
-  font-family: var(--fx-sans);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+.pageTitle, .sectionTitle, h1, h2, h3,
+.nameContainer > h1.itemName, .nameContainer > h1.parentName {
+  font-family: var(--ux-heading-font);
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-::selection { background: var(--fx-accent-dim); color: #fff; }
-::-moz-selection { background: var(--fx-accent-dim); color: #fff; }
-:focus-visible { outline: 1px solid var(--fx-accent) !important; outline-offset: 2px; }
+::selection { background: var(--ux-accent-dim); color: #fff; }
+::-moz-selection { background: var(--ux-accent-dim); color: #fff; }
+:focus-visible { outline: 1px solid var(--ux-accent) !important; outline-offset: 2px; }
 
-::-webkit-scrollbar { width: 2px; height: 2px; }
-::-webkit-scrollbar-track { background: var(--fx-bg); }
-::-webkit-scrollbar-thumb { background: var(--fx-accent); }
-* { scrollbar-width: thin; scrollbar-color: var(--fx-accent) var(--fx-bg); }
+/* Thin scrollbars, no styling complexity */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--ux-bg); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); }
+* { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.25) var(--ux-bg); }
 
 input[type="checkbox"]:checked,
-input[type="radio"]:checked { accent-color: var(--fx-accent); }
+input[type="radio"]:checked { accent-color: var(--ux-accent); }
 
-/* ── HEADER — hairline, no gradient soup ── */
+/* ── HEADER ── */
 .skinHeader {
-  background: var(--fx-bg) !important;
-  border-bottom: 1px solid var(--fx-line) !important;
+  background: var(--ux-bg) !important;
+  border-bottom: 1px solid var(--ux-line) !important;
 }
-
 .skinHeader-withBackground.semiTransparent {
-  background: linear-gradient(180deg, rgba(0,0,0,0.85), transparent) !important;
+  background: linear-gradient(180deg, rgba(0,0,0,0.8), transparent) !important;
   border: none !important;
 }
+.headerTop { align-items: center; height: var(--ux-app-bar-height); padding: 0 3%; }
+.headerUserButtonRound { border-radius: var(--ux-radius) !important; }
 
-.headerTop { align-items: center; height: var(--fx-app-bar-height); padding: 0 3%; }
-.headerUserButtonRound { border-radius: var(--fx-radius) !important; }
-
-.headroom { transition: transform 0.3s var(--fx-ease); }
-.headroom--unpinned { transform: translateY(calc(-1 * var(--fx-app-bar-height))); }
+.headroom { transition: transform 0.2s var(--ux-fast); }
+.headroom--unpinned { transform: translateY(calc(-1 * var(--ux-app-bar-height))); }
 
 .pageTitle {
-  font-size: 1.1em !important;
-  color: var(--fx-text) !important;
-  font-weight: 500;
+  font-size: 1.05em !important;
+  color: var(--ux-text) !important;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
-/* ── NAV TABS — underline hairline, monospace index feel ── */
-/* Covers stock tabs AND KefinTweaks-injected extra tabs (Watchlist,
-   Favourites, custom ones) — they render through the same .emby-tab-button
-   markup as stock Home/Movies/Shows, so no separate selector needed. */
+/* ── NAV TABS (stock + KefinTweaks-injected Watchlist/Favourites) ── */
 .sectionTabs .emby-tab-button {
   display: inline-flex;
-  margin: 0 1.6em 0 0;
+  margin: 0 1.4em 0 0;
   padding: 0.5em 0;
   height: auto;
   border-radius: 0;
   background: transparent !important;
-  color: var(--fx-text-dim);
-  font-weight: 400;
+  color: var(--ux-text-dim);
+  font-weight: 500;
   font-size: 0.82em;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   border-bottom: 1px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color var(--ux-fast), border-color var(--ux-fast);
 }
-
 .sectionTabs .emby-tab-button-active {
-  color: var(--fx-accent) !important;
+  color: var(--ux-accent) !important;
   background: transparent !important;
-  border-bottom: 1px solid var(--fx-accent) !important;
+  border-bottom: 1px solid var(--ux-accent) !important;
 }
-
-.sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) {
-  color: var(--fx-text);
-}
-
+.sectionTabs .emby-tab-button:hover:not(.emby-tab-button-active) { color: var(--ux-text); }
 .emby-tabs-slider { background: transparent; padding: 0; }
 
-/* ── NAV DRAWER — flat, hairline dividers, no blur ── */
+/* ── NAV DRAWER ── */
 .mainDrawer {
-  background-color: var(--fx-bg);
-  border-right: 1px solid var(--fx-line);
+  background-color: var(--ux-bg);
+  border-right: 1px solid var(--ux-line);
 }
-
 .navMenuOption {
   border-radius: 0 !important;
   margin: 0 !important;
-  padding: 0.75em 1.2em !important;
-  color: var(--fx-text-dim) !important;
+  padding: 0.7em 1.2em !important;
+  color: var(--ux-text-dim) !important;
   font-weight: 400;
   font-size: 0.88em;
-  letter-spacing: 0.4px;
   border-left: 2px solid transparent;
-  transition: all 0.15s !important;
+  transition: color var(--ux-fast), border-color var(--ux-fast), background var(--ux-fast);
 }
-
-.navMenuOption .material-icons { color: var(--fx-text-dimmer); transition: color 0.15s; }
-
+.navMenuOption .material-icons { color: var(--ux-text-dimmer); transition: color var(--ux-fast); }
 .navMenuOption-selected {
-  background-color: var(--fx-accent-dim) !important;
-  color: var(--fx-accent) !important;
-  border-left: 2px solid var(--fx-accent) !important;
+  background-color: var(--ux-accent-dim) !important;
+  color: var(--ux-accent) !important;
+  border-left: 2px solid var(--ux-accent) !important;
 }
-.navMenuOption-selected .material-icons { color: var(--fx-accent) !important; }
-
+.navMenuOption-selected .material-icons { color: var(--ux-accent) !important; }
 .navMenuOption:hover:not(.navMenuOption-selected) {
   background: rgba(255, 255, 255, 0.03) !important;
-  color: var(--fx-text) !important;
-  border-left: 2px solid var(--fx-line-bright) !important;
+  color: var(--ux-text) !important;
 }
-.navMenuOption:hover .material-icons { color: var(--fx-text) !important; }
-
-.navMenuOptionIcon,
-.listItemIcon:not(.listItemIcon-transparent) {
+.navMenuOption:hover .material-icons { color: var(--ux-text) !important; }
+.navMenuOptionIcon, .listItemIcon:not(.listItemIcon-transparent) {
   background-color: transparent !important;
   border-radius: 0;
 }
-
 .mainDrawer-scrollContainer > h3 {
-  font-family: var(--fx-mono);
   font-size: 0.62rem;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--fx-text-dimmer);
-  margin: 1.6em 1.2em 0.4em 1.2em;
-  font-weight: 500;
+  color: var(--ux-text-dimmer);
+  margin: 1.5em 1.2em 0.4em 1.2em;
+  font-weight: 600;
 }
 
-/* ── CARDS — sharp edges, hairline border, no shadow soup ── */
+/* ── CARDS ── */
 .cardScalable {
-  border-radius: var(--fx-radius);
-  border: 1px solid var(--fx-line) !important;
+  border-radius: var(--ux-radius);
+  border: 1px solid var(--ux-line) !important;
   overflow: hidden !important;
   box-shadow: none;
-  transition: border-color 0.2s var(--fx-ease);
+  transition: border-color var(--ux-fast);
 }
-
-.card-hoverable:hover .cardScalable {
-  border-color: var(--fx-accent) !important;
-}
-
+.card-hoverable:hover .cardScalable { border-color: var(--ux-accent) !important; }
 .card-hoverable:hover .cardImageContainer { transform: none; }
 
-.cardBox,
-.card .cardBox { background-color: var(--fx-surface) !important; }
-
-.cardText { color: var(--fx-text-dim) !important; font-weight: 400; font-size: 0.85em; }
-.cardText-first { color: var(--fx-text) !important; font-weight: 500; font-size: 0.9em; letter-spacing: 0.2px; }
-.cardText-secondary { color: var(--fx-text-dimmer) !important; font-size: 0.78em; font-family: var(--fx-mono); }
+.cardBox, .card .cardBox { background-color: var(--ux-surface) !important; }
+.cardText { color: var(--ux-text-dim) !important; font-weight: 400; font-size: 0.85em; }
+.cardText-first { color: var(--ux-text) !important; font-weight: 600; font-size: 0.9em; }
+.cardText-secondary { color: var(--ux-text-dimmer) !important; font-size: 0.78em; }
 
 .card:focus .cardBox.visualCardBox,
 .card:focus .cardBox:not(.visualCardBox) .cardScalable {
-  border: 1px solid var(--fx-accent) !important;
-  box-shadow: 0 0 0 1px var(--fx-accent) !important;
+  border: 1px solid var(--ux-accent) !important;
 }
 
-.innerCardFooter,
-.chapterThumbTextContainer {
+.innerCardFooter, .chapterThumbTextContainer {
   background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
   text-shadow: none;
 }
 
-.cardOverlayContainer {
-  background: transparent;
-  transition: background 0.15s ease;
-}
-.card-hoverable:hover .cardOverlayContainer {
-  background: rgba(0, 229, 255, 0.04);
-}
+.cardOverlayContainer { background: transparent; }
+.card-hoverable:hover .cardOverlayContainer { background: rgba(255, 255, 255, 0.03); }
 
-/* Play button — sharp square, outline only, accent glow on hover */
 .cardOverlayContainer > .cardOverlayFab-primary,
 .listItemImageButton,
 .layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
-  background-color: rgba(5, 5, 5, 0.85) !important;
-  color: var(--fx-accent) !important;
-  border: 1px solid var(--fx-accent) !important;
-  border-radius: var(--fx-radius) !important;
+  background-color: rgba(10, 10, 10, 0.9) !important;
+  color: var(--ux-text) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
   box-shadow: none !important;
-  transition: background 0.15s, box-shadow 0.15s !important;
+  transition: background var(--ux-fast), border-color var(--ux-fast);
 }
 .cardOverlayContainer > .cardOverlayFab-primary:hover,
 .listItemImageButton:hover {
-  background-color: var(--fx-accent) !important;
+  background-color: var(--ux-accent) !important;
   color: #000 !important;
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.5) !important;
+  border-color: var(--ux-accent) !important;
 }
-.cardOverlayContainer > .cardOverlayFab-primary:active,
-.listItemImageButton:active { transform: scale(0.94) !important; }
 
 .layout-desktop .cardOverlayButton-br button {
-  background: rgba(5, 5, 5, 0.7) !important;
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius) !important;
-  color: var(--fx-text) !important;
+  background: rgba(10, 10, 10, 0.8) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  color: var(--ux-text) !important;
 }
-.layout-desktop .cardOverlayButton-br button:hover {
-  border-color: var(--fx-accent) !important;
-  color: var(--fx-accent) !important;
-}
+.layout-desktop .cardOverlayButton-br button:hover { border-color: var(--ux-accent) !important; }
 
-/* ── PROGRESS / INDICATORS — 1px hairline, no glow ── */
-.itemProgressBar {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-radius: 0;
-  height: 2px !important;
-}
-
-.itemProgressBarForeground,
-.playbackProgress > div {
-  background-color: var(--fx-accent) !important;
-  border-radius: 0;
-}
-
+/* ── PROGRESS / INDICATORS — flat, no gradient repaint cost ── */
+.itemProgressBar { background: rgba(255, 255, 255, 0.12) !important; border-radius: 0; height: 2px !important; }
+.itemProgressBarForeground, .playbackProgress > div { background-color: var(--ux-accent-2) !important; border-radius: 0; }
 .countIndicator {
-  background: var(--fx-bg);
-  border: 1px solid var(--fx-accent);
-  color: var(--fx-accent) !important;
-  border-radius: var(--fx-radius) !important;
-  font-family: var(--fx-mono);
+  background: var(--ux-bg);
+  border: 1px solid var(--ux-line-bright);
+  color: var(--ux-text) !important;
+  border-radius: var(--ux-radius) !important;
   font-size: 0.7em;
 }
+.playedIndicator { background: var(--ux-accent-2); border-radius: var(--ux-radius) !important; }
+.mediaSourceIndicator { background: var(--ux-bg); border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
+.progressring-spiner { border-color: var(--ux-accent) !important; }
 
-.playedIndicator {
-  background: var(--fx-bg);
-  border: 1px solid var(--fx-text-dim);
-  border-radius: var(--fx-radius) !important;
+.mdl-slider-background-lower, .mdl-slider::-webkit-slider-thumb, .mdl-slider::-moz-range-thumb {
+  background-color: var(--ux-accent) !important;
 }
+.sliderMarker.watched { background-color: var(--ux-accent-2) !important; }
+.iconOsdProgressInner { background: var(--ux-accent) !important; }
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track { background: var(--ux-accent-dim); }
+.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb { background: var(--ux-accent); }
 
-.mediaSourceIndicator {
-  background: var(--fx-bg);
-  border: 1px solid var(--fx-line);
-  border-radius: var(--fx-radius);
-  font-family: var(--fx-mono);
-}
-
-.progressring-spiner { border-color: var(--fx-accent) !important; }
-
-.mdl-slider-background-lower,
-.mdl-slider::-webkit-slider-thumb,
-.mdl-slider::-moz-range-thumb { background-color: var(--fx-accent) !important; }
-
-.mdl-slider::-webkit-slider-thumb { border-radius: 1px; }
-
-.sliderMarker.watched { background-color: var(--fx-accent) !important; }
-.iconOsdProgressInner { background: var(--fx-accent) !important; }
-
-.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__track {
-  background: var(--fx-accent-dim);
-}
-.mdl-switch__input:checked + .mdl-switch__label + .mdl-switch__trackContainer > .mdl-switch__thumb {
-  background: var(--fx-accent);
-}
-
-/* ── BUTTONS — sharp, outline-first ── */
-.raised,
-.fab,
-a[data-role="button"] {
+/* ── BUTTONS ── */
+.raised, .fab, a[data-role="button"] {
   background: transparent !important;
-  color: var(--fx-text);
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius);
+  color: var(--ux-text);
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   font-size: 0.85em;
-  transition: all 0.15s !important;
+  transition: border-color var(--ux-fast), color var(--ux-fast), background var(--ux-fast);
 }
-.raised:hover,
-.fab:hover,
-a[data-role="button"]:hover {
-  border-color: var(--fx-accent) !important;
-  color: var(--fx-accent) !important;
+.raised:hover, .fab:hover, a[data-role="button"]:hover {
+  border-color: var(--ux-accent) !important;
+  color: var(--ux-accent) !important;
 }
-.raised:active, .fab:active, .emby-button:active { filter: brightness(1.2) !important; }
+.raised:active, .fab:active, .emby-button:active { filter: brightness(1.15) !important; }
 
-.button-submit,
-.raised.button-submit {
-  background: var(--fx-accent) !important;
+.button-submit, .raised.button-submit {
+  background: var(--ux-accent) !important;
   color: #000 !important;
-  border: 1px solid var(--fx-accent) !important;
-  font-weight: 600;
+  border: 1px solid var(--ux-accent) !important;
+  font-weight: 700;
 }
-.button-submit:hover { background: var(--fx-accent-bright) !important; }
+.button-submit:hover { background: rgba(255,255,255,0.85) !important; }
 
 #btnDeleteImage, .button-delete, .btnRevoke, #btnShutdown {
   background: transparent !important;
-  border: 1px solid rgb(255, 60, 60) !important;
-  color: rgb(255, 60, 60) !important;
+  border: 1px solid rgb(239, 68, 68) !important;
+  color: rgb(239, 68, 68) !important;
 }
+.button-flat:hover, .button-link:hover { color: var(--ux-accent) !important; }
 
-.button-flat:hover,
-.button-link:hover { color: var(--fx-accent) !important; }
-
-.btnPlay.detailButton {
-  background-color: var(--fx-accent) !important;
+.btnPlay.detailButton, #itemDetailPage .btnPlay {
+  background-color: var(--ux-accent) !important;
   color: #000 !important;
-  border-radius: var(--fx-radius);
-  font-weight: 600;
+  border-radius: var(--ux-radius);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.btnPlay.detailButton:hover { background-color: var(--fx-accent-bright) !important; }
+.btnPlay.detailButton:hover, #itemDetailPage .btnPlay:hover { background-color: rgba(255,255,255,0.85) !important; }
+.btnPlay.play-button::before { content: none !important; }
 
 .detailButton:not(.btnPlay) {
   background: transparent !important;
-  border: 1px solid var(--fx-line-bright);
-  border-radius: var(--fx-radius);
+  border: 1px solid var(--ux-line-bright);
+  border-radius: var(--ux-radius);
 }
-.detailButton:not(.btnPlay):hover {
-  border-color: var(--fx-accent);
-  color: var(--fx-accent) !important;
-}
+.detailButton:not(.btnPlay):hover { border-color: var(--ux-accent); color: var(--ux-accent) !important; }
 
-/* ── DIALOGS — flat panel, hairline border, no heavy blur ── */
-.dialog,
-.toast,
-.upNextContainer,
-.playerStats-stats,
-.actionSheetContent,
-.manualLoginForm {
-  background-color: var(--fx-glass) !important;
-  border-radius: var(--fx-radius-lg) !important;
-  border: 1px solid var(--fx-line) !important;
+/* ── DIALOGS — flat panel, NO blur ── */
+.dialog, .toast, .upNextContainer, .playerStats-stats, .actionSheetContent, .manualLoginForm {
+  background-color: var(--ux-panel) !important;
+  border-radius: var(--ux-radius-lg) !important;
+  border: 1px solid var(--ux-line) !important;
 }
-
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .dialog, .toast, .upNextContainer, .playerStats-stats, .mainDrawer {
-    -webkit-backdrop-filter: blur(6px) !important;
-    backdrop-filter: blur(6px) !important;
-  }
-}
-
-.upNextContainer .btnStartNow {
-  background-color: var(--fx-accent) !important;
-  color: #000 !important;
-}
-.upNextDialog-countdownText { color: var(--fx-accent) !important; font-family: var(--fx-mono); }
-
-.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--fx-accent-dim); color: var(--fx-accent); }
+.upNextContainer .btnStartNow { background-color: var(--ux-accent) !important; color: #000 !important; }
+.upNextDialog-countdownText { color: var(--ux-accent) !important; }
+.actionSheetMenuItem:has(.listItemIcon.check) { background-color: var(--ux-accent-dim); color: var(--ux-accent); }
 
 /* ── DETAIL PAGE ── */
-.detailPagePrimaryContainer,
-.detailPageWrapperContainer { background-color: var(--fx-bg) !important; }
-
+.detailPagePrimaryContainer, .detailPageWrapperContainer { background-color: var(--ux-bg) !important; }
 .itemBackdrop { position: relative; }
 .itemBackdrop::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, var(--fx-bg) 100%);
+  background: linear-gradient(180deg, transparent 40%, var(--ux-bg) 100%);
 }
-
-#itemDetailPage .btnPlay {
-  background: var(--fx-accent) !important;
-  color: #000 !important;
-  font-weight: 600;
+.detailImageContainer .cardImageContainer, .detailImageContainer .card {
+  border-radius: var(--ux-radius) !important;
+  border: 1px solid var(--ux-line);
 }
-#itemDetailPage .btnPlay:hover { background: var(--fx-accent-bright) !important; }
-
-.detailImageContainer .cardImageContainer,
-.detailImageContainer .card { border-radius: var(--fx-radius) !important; border: 1px solid var(--fx-line); }
-
-.nameContainer > h1.itemName,
-.nameContainer > h1.parentName {
-  font-family: var(--fx-sans);
-  font-weight: 600;
-  font-size: 3em;
-  letter-spacing: -0.01em;
-  color: var(--fx-text);
-  text-transform: none;
-}
-
-.subtitle { color: var(--fx-text-dim); font-weight: 400; font-family: var(--fx-mono); font-size: 0.9em; }
-
-.starIcon { color: var(--fx-accent) !important; }
-
+.subtitle { color: var(--ux-text-dim); font-weight: 400; }
+.starIcon { color: var(--ux-accent) !important; }
 .mediaInfoOfficialRating {
-  border: 1px solid var(--fx-line-bright) !important;
-  color: var(--fx-text) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  color: var(--ux-text) !important;
   background: transparent !important;
-  border-radius: var(--fx-radius);
-  font-family: var(--fx-mono);
+  border-radius: var(--ux-radius);
   font-size: 0.8em;
 }
-
-.itemMiscInfo-primary .mediaInfoItem {
-  font-family: var(--fx-mono);
-  color: var(--fx-text-dim);
-}
+.itemMiscInfo-primary .mediaInfoItem { color: var(--ux-text-dim); }
 
 /* ── MEDIA PLAYER / OSD ── */
-.nowPlayingBar,
-.videoOsdBottom .osdControls {
-  background-color: var(--fx-glass) !important;
-  border-radius: var(--fx-radius-lg);
-  border: 1px solid var(--fx-line);
+.nowPlayingBar, .videoOsdBottom .osdControls {
+  background-color: var(--ux-panel) !important;
+  border-radius: var(--ux-radius-lg);
+  border: 1px solid var(--ux-line);
 }
-
 .skip-button, #introSkipperButton, .introSkipperButton, .skipIntroButton {
-  background-color: var(--fx-bg);
-  border: 1px solid var(--fx-accent);
-  color: var(--fx-accent);
-  font-weight: 500;
+  background-color: var(--ux-bg);
+  border: 1px solid var(--ux-accent);
+  color: var(--ux-accent);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-radius: var(--fx-radius);
+  border-radius: var(--ux-radius);
   font-size: 0.8em;
 }
-.skip-button:hover, #introSkipperButton:hover {
-  background-color: var(--fx-accent);
-  color: #000;
-}
+.skip-button:hover, #introSkipperButton:hover { background-color: var(--ux-accent); color: #000; }
 
 /* ── LOGIN PAGE ── */
-#loginPage {
-  background: var(--fx-bg) !important;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) !important;
-  background-size: 40px 40px !important;
-}
-
+#loginPage { background: var(--ux-bg) !important; }
 #loginPage .padded-left.padded-right.padded-bottom-page {
-  background: var(--fx-surface);
-  border-radius: var(--fx-radius-lg);
-  border: 1px solid var(--fx-line);
+  background: var(--ux-surface);
+  border-radius: var(--ux-radius-lg);
+  border: 1px solid var(--ux-line);
   padding: 3em 3em 1.5em !important;
 }
-
 #loginPage h1 { display: none; }
-
 #loginPage .raised.cancel.block.btnForgotPassword.emby-button {
   background: transparent !important;
   border: none !important;
-  color: var(--fx-text-dim) !important;
+  color: var(--ux-text-dim) !important;
 }
-#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--fx-accent) !important; }
-
+#loginPage .raised.cancel.block.btnForgotPassword.emby-button:hover { color: var(--ux-accent) !important; }
 .manualLoginForm::before {
   content: "USHER'S THEME";
   display: block;
   text-align: center;
-  font-family: var(--fx-mono);
-  color: var(--fx-accent);
-  font-size: 1.1em;
-  letter-spacing: 4px;
-  margin-bottom: 1.5em;
+  font-family: var(--ux-heading-font);
+  color: var(--ux-accent);
+  font-size: 1.3em;
+  letter-spacing: 3px;
+  margin-bottom: 1.2em;
   text-transform: uppercase;
 }
 
 /* ── FORM INPUTS ── */
-.emby-input,
-.emby-textarea,
-.emby-select-withcolor,
-.checkboxOutline {
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius) !important;
+.emby-input, .emby-textarea, .emby-select-withcolor, .checkboxOutline {
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
   background-color: transparent !important;
-  color: var(--fx-text) !important;
+  color: var(--ux-text) !important;
+}
+.emby-input:focus, .emby-textarea:focus, .emby-select-withcolor:focus, .checkboxOutline:focus {
+  border-color: var(--ux-accent) !important;
+}
+input[type="checkbox"]:checked ~ .checkboxOutline, input[type="checkbox"]:checked + .checkboxOutline {
+  background: var(--ux-accent) !important;
+  border-color: var(--ux-accent) !important;
 }
 
-.emby-input:focus,
-.emby-textarea:focus,
-.emby-select-withcolor:focus,
-.checkboxOutline:focus { border-color: var(--fx-accent) !important; }
-
-input[type="checkbox"]:checked ~ .checkboxOutline,
-input[type="checkbox"]:checked + .checkboxOutline {
-  background: var(--fx-accent) !important;
-  border-color: var(--fx-accent) !important;
+/* ── DASHBOARD / SETTINGS / ADMIN — previously untouched ── */
+.dashboardDocument, .settingsPage, .adminPage, .userSettingsPage, .displayPreferencesPage,
+#myPreferencesMenuPage {
+  background-color: var(--ux-bg) !important;
 }
-
-/* ── TABLES / DASHBOARD ── */
+.paperList {
+  background-color: var(--ux-surface) !important;
+  border: 1px solid var(--ux-line) !important;
+  border-radius: var(--ux-radius) !important;
+}
+.settingsPage h2, .adminPage h2, .userSettingsPage h2 {
+  font-family: var(--ux-heading-font);
+  font-weight: 700;
+}
+.checkboxContainer, .listItem { border-radius: 0 !important; }
+.listItem:hover { background: rgba(255, 255, 255, 0.03) !important; }
 table:not(.MuiTable-root.MuiTable-stickyHeader) {
-  border: 1px solid var(--fx-line) !important;
-  border-radius: var(--fx-radius);
-  background: var(--fx-surface);
+  border: 1px solid var(--ux-line) !important;
+  border-radius: var(--ux-radius);
+  background: var(--ux-surface);
 }
-
 .detailTableBodyRow-shaded:nth-child(odd) { background: rgba(255, 255, 255, 0.015) !important; }
 .detailTableBodyRow-shaded:nth-child(even) { background: transparent !important; }
+.Mui-selected { background-color: var(--ux-accent-dim) !important; color: var(--ux-accent) !important; }
+.MuiDrawer-paper { background: var(--ux-bg); }
+.MuiAppBar-root { background: var(--ux-bg); border-bottom: 1px solid var(--ux-line); }
 
-.Mui-selected { background-color: var(--fx-accent-dim) !important; color: var(--fx-accent) !important; }
-.MuiDrawer-paper { background: var(--fx-bg); }
-.MuiAppBar-root { background: var(--fx-bg); border-bottom: 1px solid var(--fx-line); }
+/* ── SEARCH PAGE ── */
+#searchTextInput {
+  background: var(--ux-surface) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  color: var(--ux-text) !important;
+}
+.searchSuggestionsList .emby-button { color: var(--ux-text-dim); }
+.searchSuggestionsList .emby-button:hover { color: var(--ux-accent); }
 
 /* ── TV GUIDE ── */
-.guideProgramName { background-color: transparent; border: 1px solid var(--fx-line); border-radius: var(--fx-radius); }
-.programCell-active .guideProgramName { border-color: var(--fx-accent); background: var(--fx-accent-dim); }
-.guide-channelHeaderCell { background-color: var(--fx-surface); border: 1px solid var(--fx-line); border-radius: var(--fx-radius); }
+.guideProgramName { background-color: transparent; border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
+.programCell-active .guideProgramName { border-color: var(--ux-accent); background: var(--ux-accent-dim); }
+.guide-channelHeaderCell { background-color: var(--ux-surface); border: 1px solid var(--ux-line); border-radius: var(--ux-radius); }
 
-/* ── HOME LIBRARY BUTTONS ── */
-.homeLibraryButton { border-radius: var(--fx-radius) !important; }
-.raised.homeLibraryButton {
-  background: transparent !important;
-  border: 1px solid var(--fx-line-bright) !important;
-}
-.raised.homeLibraryButton:hover { border-color: var(--fx-accent) !important; color: var(--fx-accent) !important; }
+/* ── HOME LIBRARY BUTTONS / SECTION TITLES ── */
+.homeLibraryButton { border-radius: var(--ux-radius) !important; }
+.raised.homeLibraryButton { background: transparent !important; border: 1px solid var(--ux-line-bright) !important; }
+.raised.homeLibraryButton:hover { border-color: var(--ux-accent) !important; color: var(--ux-accent) !important; }
 
-/* ── SECTION TITLES ── */
 .sectionTitle {
-  color: var(--fx-text) !important;
-  font-weight: 500;
+  color: var(--ux-text) !important;
+  font-weight: 700;
   font-size: 1.05em;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
 .emby-scrollbuttons-button.paper-icon-button-light {
-  background: var(--fx-bg) !important;
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius) !important;
+  background: var(--ux-bg) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--ux-fast);
 }
 .emby-scroller-container:hover .emby-scrollbuttons-button.paper-icon-button-light { opacity: 1; }
 
 /* ════════════════════════════════════════════════════════════
-   MEDIA BAR ENHANCED — real classes confirmed from that plugin's
-   own DOM (#slides-container, .detailButton, .misc-info, .plot,
-   .genre, .favorite-button, .detail-button, #slide-counter,
-   .star-rating-container, .critic-rating, .age-rating, .runTime,
-   .date, .separator-icon, .arrow). Restyled to match the sharp/
-   hairline futurist look instead of leaving it unstyled or
-   fighting the plugin's own defaults.
+   MEDIA BAR ENHANCED (#slides-container)
    ════════════════════════════════════════════════════════════ */
-#slides-container {
-  font-family: var(--fx-sans) !important;
+#slides-container { font-family: var(--ux-body-font) !important; }
+#slides-container .detailButton, #slides-container .misc-info,
+#slides-container .misc-info *:not(.material-icons), #slides-container .plot,
+#slides-container .genre, #slides-container .play-text, #slides-container .trailer-text {
+  font-family: var(--ux-body-font) !important;
 }
 
-#slides-container .detailButton,
-#slides-container .misc-info,
-#slides-container .misc-info *:not(.material-icons),
-#slides-container .plot,
-#slides-container .genre,
-#slides-container .play-text,
-#slides-container .trailer-text {
-  font-family: var(--fx-sans) !important;
-}
-
-/* Primary Play button — sharp, outline, accent, matches card play button */
-#slides-container .detailButton.btnPlay,
-#slides-container .btnPlay {
-  background: var(--fx-accent) !important;
+#slides-container .detailButton.btnPlay, #slides-container .btnPlay {
+  background: var(--ux-accent) !important;
   color: #000 !important;
-  border: 1px solid var(--fx-accent) !important;
-  border-radius: var(--fx-radius) !important;
-  font-weight: 600;
+  border: 1px solid var(--ux-accent) !important;
+  border-radius: var(--ux-radius) !important;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-#slides-container .detailButton.btnPlay:hover,
-#slides-container .btnPlay:hover {
-  background: var(--fx-accent-bright) !important;
+#slides-container .detailButton.btnPlay:hover, #slides-container .btnPlay:hover {
+  background: rgba(255,255,255,0.85) !important;
 }
+#slides-container .btnPlay.play-button::before { content: none !important; }
 
-/* Secondary buttons (favorite/bookmark/detail) — flat outline, no blur */
-#slides-container .favorite-button,
-#slides-container .detail-button,
-#slides-container .watchlist-button {
-  background: rgba(5, 5, 5, 0.85) !important;
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius) !important;
-  color: var(--fx-text) !important;
+#slides-container .favorite-button, #slides-container .detail-button, #slides-container .watchlist-button {
+  background: rgba(10, 10, 10, 0.9) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
+  color: var(--ux-text) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   padding: 8px !important;
 }
-#slides-container .favorite-button:hover,
-#slides-container .detail-button:hover,
+#slides-container .favorite-button:hover, #slides-container .detail-button:hover,
 #slides-container .watchlist-button:hover {
-  border-color: var(--fx-accent) !important;
-  color: var(--fx-accent) !important;
+  border-color: var(--ux-accent) !important;
+  color: var(--ux-accent) !important;
 }
 
-/* Info chips (episode counter, rating, age, runtime, date) — hairline
-   outline instead of the plugin's default blurred pill */
-#slides-container #slide-counter,
-#slides-container .star-rating-container,
-#slides-container .critic-rating,
-#slides-container .age-rating,
-#slides-container .runTime,
-#slides-container .date {
-  background: var(--fx-bg) !important;
-  border: 1px solid var(--fx-line-bright) !important;
-  border-radius: var(--fx-radius) !important;
+#slides-container #slide-counter, #slides-container .star-rating-container,
+#slides-container .critic-rating, #slides-container .age-rating,
+#slides-container .runTime, #slides-container .date {
+  background: var(--ux-bg) !important;
+  border: 1px solid var(--ux-line-bright) !important;
+  border-radius: var(--ux-radius) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  color: var(--fx-text-dim) !important;
-  font-family: var(--fx-mono) !important;
+  color: var(--ux-text-dim) !important;
   font-weight: 500;
   font-size: 0.75rem;
 }
-
-#slides-container #slide-counter {
-  border-radius: var(--fx-radius) !important;
-  color: var(--fx-accent) !important;
-  border-color: var(--fx-accent) !important;
-}
-
-#slides-container .separator-icon {
-  color: var(--fx-text-dimmer) !important;
-}
-
-#slides-container .plot {
-  color: var(--fx-text-dim) !important;
-  font-weight: 400;
-}
-
+#slides-container #slide-counter { color: var(--ux-accent) !important; border-color: var(--ux-accent) !important; }
+#slides-container .separator-icon { color: var(--ux-text-dimmer) !important; }
+#slides-container .plot { color: var(--ux-text-dim) !important; }
 #slides-container .genre {
-  color: var(--fx-text) !important;
-  font-family: var(--fx-mono) !important;
+  color: var(--ux-text) !important;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   font-size: 0.8em;
   opacity: 0.7;
 }
-
-#slides-container .favorite-button.favorited {
-  color: var(--fx-accent) !important;
-  border-color: var(--fx-accent) !important;
-}
+#slides-container .favorite-button.favorited { color: var(--ux-accent) !important; border-color: var(--ux-accent) !important; }
 
 /* ════════════════════════════════════════════════════════════
-   KEFINTWEAKS — Watchlist page + injected home sections. These
-   use plain custom class names (not stock Jellyfin ones), so
-   they need their own rules rather than inheriting from the
-   sections above.
+   KEFINTWEAKS — Watchlist + home sections
    ════════════════════════════════════════════════════════════ */
 .sections.watchlist .watchlist-tabs button {
-  font-family: var(--fx-sans) !important;
-  color: var(--fx-text-dim) !important;
+  color: var(--ux-text-dim) !important;
   border-radius: 0 !important;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 0.8em;
 }
 .sections.watchlist .watchlist-tabs button.active {
-  color: var(--fx-accent) !important;
-  border-bottom-color: var(--fx-accent) !important;
+  color: var(--ux-accent) !important;
+  border-bottom-color: var(--ux-accent) !important;
   background: transparent !important;
 }
-.sections.watchlist .watchlist-tabs button:hover {
-  color: var(--fx-text) !important;
-  background: rgba(255, 255, 255, 0.03) !important;
-}
+.sections.watchlist .watchlist-tabs button:hover { color: var(--ux-text) !important; background: rgba(255,255,255,0.03) !important; }
 
-.progress-card,
-.movie-card,
-.stat-card,
-.top-shows-container {
-  background: var(--fx-surface) !important;
-  border: 1px solid var(--fx-line) !important;
-  border-radius: var(--fx-radius) !important;
+.progress-card, .movie-card, .stat-card, .top-shows-container {
+  background: var(--ux-surface) !important;
+  border: 1px solid var(--ux-line) !important;
+  border-radius: var(--ux-radius) !important;
   backdrop-filter: none !important;
 }
-.progress-card:hover,
-.movie-card:hover {
-  background: var(--fx-surface-2) !important;
-  border-color: var(--fx-line-bright) !important;
-}
+.progress-card:hover, .movie-card:hover { background: var(--ux-surface-2) !important; border-color: var(--ux-line-bright) !important; }
+.progress-bar-fill, .progress-chunk.watched { background: var(--ux-accent-2) !important; }
+.progress-percentage, .action-link, .view-episode-btn { color: var(--ux-accent) !important; }
+.watchlist-button[data-active="true"], .watchlist-icon[data-active="true"] { color: var(--ux-accent-2) !important; }
+.pagination-btn.active { background: var(--ux-accent) !important; border-color: var(--ux-accent) !important; color: #000 !important; }
 
-.progress-bar-fill,
-.progress-chunk.watched {
-  background: var(--fx-accent) !important;
-}
-.progress-percentage,
-.action-link,
-.view-episode-btn {
-  color: var(--fx-accent) !important;
-}
-
-.watchlist-button[data-active="true"],
-.watchlist-icon[data-active="true"] {
-  color: var(--fx-accent) !important;
-}
-
-.pagination-btn.active {
-  background: var(--fx-accent) !important;
-  border-color: var(--fx-accent) !important;
-  color: #000 !important;
-}
-
-/* ── RESPONSIVE / LAYOUT HOOKS ── */
-.layout-mobile .detailPagePrimaryContainer { background: transparent; }
-.layout-tv .emby-tab-button { padding: 0.4em 1.3em; }
-.layout-tv .card:focus .cardBox { box-shadow: 0 0 0 2px var(--fx-accent) !important; }
-
-.headerButton,
-.headerButton.headerButtonLeft,
-.headerButton.headerButtonRight,
-.headerUserButton,
-.headerCastButton,
-.headerSyncButton {
+/* ── MOBILE TOUCH TARGETS ── */
+.headerButton, .headerButton.headerButtonLeft, .headerButton.headerButtonRight,
+.headerUserButton, .headerCastButton, .headerSyncButton {
   width: 36px !important;
   height: 36px !important;
   min-width: 36px !important;
   min-height: 36px !important;
 }
-
-.headerButton .material-icons,
-.headerButton .material-icons-round { font-size: 26px !important; }
+.headerButton .material-icons, .headerButton .material-icons-round { font-size: 26px !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* ── FIX: broken play-icon ligature on the hero Play button ──
-   .detailButton.btnPlay.play-button's ::before is meant to render a
-   play_arrow icon glyph, but the icon font isn't reaching it here,
-   so the browser falls back to showing the raw icon name as literal
-   text ("play_arrow" → reads as "PLAY ARROW"), stacking with the
-   .play-text span's "Play" to produce "PLAY ARROW PLAY". The text
-   label already says everything the icon was for, so just remove
-   the broken pseudo-element instead of chasing the font. */
-.btnPlay.play-button::before {
-  content: none !important;
 }
